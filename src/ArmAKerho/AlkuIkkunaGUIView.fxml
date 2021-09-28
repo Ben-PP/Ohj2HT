@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="ArmAKerho.ArmAKerhoGUIController">
+   <center>
+      <VBox alignment="CENTER" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Kerhon nimi">
+               <font>
+                  <Font name="System Bold Italic" size="26.0" />
+               </font>
+            </Label>
+            <TextField fx:id="kerhonNimiTxtField" alignment="CENTER" maxWidth="300.0" promptText="Syötä kerhon nimi tähän">
+               <VBox.margin>
+                  <Insets bottom="20.0" top="10.0" />
+               </VBox.margin>
+            </TextField>
+            <HBox alignment="CENTER" spacing="30.0">
+               <children>
+                  <Button mnemonicParsing="false" text="Peruuta" />
+                  <Button fx:id="AlkuOkBtn" mnemonicParsing="false" onAction="#AvaaPaaIkkuna" text="Ok" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
