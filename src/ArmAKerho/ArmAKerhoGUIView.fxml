@@ -1,7 +1,263 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="ArmAKerho.ArmAKerhoGUIController">
-    <!-- TODO Add Nodes -->
+<BorderPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ArmAKerho.ArmAKerhoGUIController">
+   <center>
+      <SplitPane dividerPositions="0.29797979797979796" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <VBox alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label text="Haku">
+                           <font>
+                              <Font name="System Bold" size="23.0" />
+                           </font>
+                        </Label>
+                        <SplitMenuButton mnemonicParsing="false" prefHeight="25.0" prefWidth="176.0" text="Haku tapa">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Nimi" />
+                            <MenuItem mnemonicParsing="false" text="P-nimi" />
+                          </items>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </SplitMenuButton>
+                        <TextField promptText="Hae" />
+                        <Label text="Pelurit">
+                           <font>
+                              <Font name="System Bold Italic" size="16.0" />
+                           </font>
+                        </Label>
+                        <ListView prefHeight="200.0" prefWidth="200.0" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <VBox alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+                     <children>
+                        <Label text="Pelurin tiedot">
+                           <font>
+                              <Font name="System Bold" size="25.0" />
+                           </font></Label>
+                        <Pane maxWidth="300.0" prefWidth="200.0" style="-fx-border-style: solid;">
+                           <children>
+                              <VBox alignment="CENTER" maxWidth="300.0" prefWidth="300.0">
+                                 <children>
+                                    <HBox alignment="CENTER_RIGHT">
+                                       <children>
+                                          <Label text="Nimi:" />
+                                          <TextField />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT">
+                                       <children>
+                                          <Label text="P-Nimi:" />
+                                          <TextField>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin></TextField>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT">
+                                       <children>
+                                          <Label text="T-Tila:" />
+                                          <TextField />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <Label text="Pelipäivät">
+                                       <font>
+                                          <Font name="System Bold" size="21.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <HBox>
+                                       <children>
+                                          <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <Label text="Maanantai:">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Tiistai:">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Keskiviikko:">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Torstai:">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Perjantai:">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Lauantai:">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Sunnuntai:">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Label text="18:00 - 22:00">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="18:00 - 22:00">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Ei käy!">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="14:00 - 15:00">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Ei käy!">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Ei käy!">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Ei käy!">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets left="10.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <Button fx:id="muokkaaAikojaBtn" mnemonicParsing="false" onAction="#avaaAikaMuokkaus" text="Muokkaa aikoja">
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+               </children></AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+   <bottom>
+      <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="uusiPeluriBtn" mnemonicParsing="false" onAction="#avaaPeluriLuonti" text="Uusi peluri">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin></Button>
+            <Button mnemonicParsing="false" text="Tallenna">
+               <HBox.margin>
+                  <Insets right="250.0" />
+               </HBox.margin></Button>
+            <Label text="ModPack koko:">
+               <font>
+                  <Font name="System Italic" size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Label>
+            <TextField maxWidth="70.0">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </BorderPane.margin>
+      </HBox>
+   </bottom>
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Tiedosto">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Tallenna" />
+              <MenuItem mnemonicParsing="false" text="Avaa" />
+              <MenuItem mnemonicParsing="false" text="Tulosta" />
+              <MenuItem mnemonicParsing="false" text="Lopeta" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Muokkaa">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Lisää uusi jäsen" />
+              <MenuItem mnemonicParsing="false" text="Poista jäsen" />
+              <MenuItem mnemonicParsing="false" text="Muokkaa jäsentä" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Send Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Apuva" />
+              <MenuItem mnemonicParsing="false" text="Tietoja" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
 </BorderPane>

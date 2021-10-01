@@ -15,6 +15,8 @@ import javafx.stage.Stage;
  */
 public class ArmAKerhoGUIController {
     
+    
+    
     @FXML
     private TextField kerhonNimiTxtField;
     
@@ -36,6 +38,36 @@ public class ArmAKerhoGUIController {
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));
             stage.setTitle("Ei kerhoa");
+            stage.show();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+    
+    
+    @FXML
+    private void avaaPeluriLuonti(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("peluriLuontiGUIView.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.setTitle("Lisää peluri");
+            stage.show();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+    
+    
+    @FXML
+    private void avaaAikaMuokkaus(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("aikaMuokkausGUIView.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.setTitle("Peliajat");
             stage.show();
         } catch (Exception e) {
             System.err.println(e.getMessage());
