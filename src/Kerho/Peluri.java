@@ -91,6 +91,27 @@ public class Peluri {
     
     
     /**
+     * Palauttaa pelurin nimen
+     * @return pelurin nimi
+     */
+    public String getNimi() {
+        return this.nimi;
+    }
+    
+    
+    
+    public String getPNimi() {
+        return this.pelaajaNimi;
+    }
+    
+    
+    
+    public int getTTila() {
+        return this.tallennusTila;
+    }
+    
+    
+    /**
      * Täyttää pelurin tiedot testitiedoilla
      */
     public void taytaTestiTiedoilla() {

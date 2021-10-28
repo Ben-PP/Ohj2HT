@@ -53,7 +53,7 @@ public class Pelurit {
      */
     public void lisaa(Peluri peluri) throws SailoException {
         
-        if(lkm >= alkiot.length) throw new SailoException("Liikaa alkioita");
+        if(lkm >= alkiot.length) throw new SailoException("Liikaa alkioita");   // TODO: Tee niin että voi kasvattaa taulukon kokoa
         
         this.alkiot[this.lkm] = peluri;
         lkm++;

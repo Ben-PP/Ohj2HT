@@ -12,7 +12,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import fi.jyu.mit.fxgui.Dialogs;
+import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
+
+import Kerho.Kerho;
+import Kerho.Peluri;
+import Kerho.SailoException;
 
 /**
  * @author Karel Parkkola
@@ -26,6 +31,10 @@ public class ArmAKerhoGUIController implements Initializable {
     
     //Hakukenttä johon voidaan kirjoittaa
     @FXML private TextField hakuSana;
+    @FXML private ListChooser<Peluri> chooserPelurit;
+    @FXML private TextField nimiTxtField;
+    @FXML private TextField pNimiTxtField;
+    @FXML private TextField tTilaTxtField;
     
     //Kerhon nimi. Oletus on valmiiksi kirjoitettuna kenttään.
     private String kerhonnimi = "ArmA Kerho";
@@ -33,7 +42,7 @@ public class ArmAKerhoGUIController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
-        //      
+        alusta();
     }
     
     
@@ -61,20 +70,20 @@ public class ArmAKerhoGUIController implements Initializable {
      */
     @FXML
     private void handleUusiPeluri() {
-        ModalController.showModal(ArmAKerhoGUIController.class.getResource("PeluriLuontiGUIView.fxml"), "Jäsen", null, "");
-        // TODO: Mieti kumpi on parempi, todennäköisesti modal?
-        /**
+        
+        Peluri peluri = ModalController.showModal(ArmAKerhoGUIController.class.getResource("PeluriLuontiGUIView.fxml"), "Peluri", null, null);
+
         try {
-            FXMLLoader ldr = new FXMLLoader(ArmAKerhoGUIController.class.getResource("PeluriLuontiGUIView.fxml"));
-            Parent root1 = ldr.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root1));
-            stage.setTitle("Lisää peluri");
-            stage.show();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
+            
+            //Koittaa avata pelurin luonti ikkunan ja tehdä annettujen tietojen pohjalta uuden pelurin ja lopuksi lisää sen kerhoon
+            kerho.lisaa(peluri);
+            hae(peluri.getPeluriId());
+            
+        } catch (SailoException e) {
+            
+            Dialogs.showMessageDialog("Ongelmia uuden pelurin luomisessa " + e.getMessage());
+            return;
         }
-        */
     }
     
     
@@ -84,7 +93,7 @@ public class ArmAKerhoGUIController implements Initializable {
     @FXML
     private void handleMuokkaaPeluria() {
         // TODO: Tämä hyvä modaalisena?
-        ModalController.showModal(ArmAKerhoGUIController.class.getResource("PeluriDialogView.fxml"), "Jäsen", null, "");
+        ModalController.showModal(ArmAKerhoGUIController.class.getResource("PeluriDialogView.fxml"), "Peluri", null, "");
     }
     
     
@@ -164,8 +173,34 @@ public class ArmAKerhoGUIController implements Initializable {
     
     
      // --------------------------------------------------------------------------------------------------------
-     // -------Koodin sisäiset aliohjelmat--------------------------------------------------------------------
+     // -------Koodin sisäiset asiat----------------------------------------------------------------------------
      // --------------------------------------------------------------------------------------------------------
+    
+    private Kerho kerho;
+    
+    
+    /**
+     * Alustaa pääikkunan
+     */
+    private void alusta() {
+        chooserPelurit.clear();
+        chooserPelurit.addSelectionListener(e -> naytaPeluri());
+    }
+    
+    
+    /**
+     * Näyttää listalta valitun pelurin tiedot
+     */
+    private void naytaPeluri() {
+        Peluri peluriKohdalla = chooserPelurit.getSelectedObject();
+        
+        if (peluriKohdalla == null) return;
+        
+        nimiTxtField.setText(peluriKohdalla.getNimi());
+        pNimiTxtField.setText(peluriKohdalla.getPNimi());
+        tTilaTxtField.setText(Integer.toString(peluriKohdalla.getTTila()));
+    }
+    
     
     /**
      * Asettaa ikkunan titlen
@@ -230,6 +265,30 @@ public class ArmAKerhoGUIController implements Initializable {
             return;
         }
     }
-
-
+    
+    
+    /**
+     * Asetetaan käytettävä kerho
+     * @param kerho jota käytetään
+     */
+    public void setKerho(Kerho kerho) {
+        this.kerho = kerho;
+    }
+    
+    
+    /**
+     * Päivittää peluri listan
+     * @param jnro jäsennumero
+     */
+    private void hae(int jnro) {
+        chooserPelurit.clear();
+        
+        int index = 0;
+        for (int i = 0; i < kerho.getPelureita(); i++) {
+            Peluri peluri = kerho.getPeluri(i);
+            if (peluri.getPeluriId() == jnro) index = i;
+            chooserPelurit.add(peluri.getNimi(), peluri);
+        }
+        chooserPelurit.setSelectedIndex(index);
+    }
 }

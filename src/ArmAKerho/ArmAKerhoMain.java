@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.fxml.FXMLLoader;
 
+import Kerho.Kerho;
+
 
 /**
  * @author Karel Parkkola
@@ -28,12 +30,15 @@ public class ArmAKerhoMain extends Application {
             final FXMLLoader ldr = new FXMLLoader(getClass().getResource("ArmAKerhoGUIView.fxml"));
             final Pane root = ldr.load();
             final ArmAKerhoGUIController kerhoCtrl = (ArmAKerhoGUIController)ldr.getController();
-            // TODO: Alla olevan pointti?
-            //final ArmAKerhoGUIController armakerhoCtrl = (ArmAKerhoGUIController) ldr.getController();
-            Scene scene = new Scene(root);
+            
+            final Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("armakerho.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Kerho Velho");
+            
+            Kerho kerho = new Kerho();
+            kerhoCtrl.setKerho(kerho);
+            
             primaryStage.show();
             
             //Avaa KerhonNimiView ikkunan kerhon nimen kysymiseksi
