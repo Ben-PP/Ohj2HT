@@ -15,7 +15,7 @@ import static Kanta.PuhelinTarkistus.*;
  * -    Osaa laittaa merkkijonon i:neksi kentäksi
  * 
  * @author Karel
- * @version 24.10.2021
+ * @version 28.10.2021
  *
  */
 public class Peluri {
@@ -79,7 +79,9 @@ public class Peluri {
      * @example
      * <pre name="test">
      *  Peluri ben1 = new Peluri();
+     *  ben1.rekisteroi();
      *  Peluri ben2 = new Peluri();
+     *  ben2.rekisteroi();
      *  int n1 = ben1.getPeluriId();
      *  int n2 = ben2.getPeluriId();
      *  n1 === n2-1
@@ -99,13 +101,31 @@ public class Peluri {
     }
     
     
-    
+    /**
+     * Palauttaa pelurin pelaajanimen
+     * @return Pelurin pelaajanimi
+     * @example
+     * <pre name="test">
+     *  Peluri ben1 = new Peluri();
+     *  ben1.taytaTestiTiedoilla();
+     *  ben1.getPNimi() === "Ben_P"
+     * </pre>
+     */
     public String getPNimi() {
         return this.pelaajaNimi;
     }
     
     
-    
+    /**
+     * Palauttaa pelurin tallennustilan
+     * @return Pelurin tallennustila
+     * @example
+     * <pre name="test">
+     *  Peluri ben1 = new Peluri();
+     *  ben1.taytaTestiTiedoilla();
+     *  ben1.getTTila() === 1000;
+     * </pre>
+     */
     public int getTTila() {
         return this.tallennusTila;
     }

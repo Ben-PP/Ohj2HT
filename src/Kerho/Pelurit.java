@@ -8,7 +8,7 @@ package Kerho;
  * -    Osaa etsiä ja lajitella
  * 
  * @author Karel
- * @version 24.10.2021
+ * @version 28.10.2021
  *
  */
 public class Pelurit {

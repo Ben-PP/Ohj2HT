@@ -1,9 +1,4 @@
-/**
- * 
- */
 package Kerho;
-
-import java.util.ArrayList;
 
 /**
  * Kerholuokka
@@ -25,6 +20,7 @@ public class Kerho {
      * Lisää pelurin kerhoon
      * @param peluri peluri joka lisätään
      * @throws SailoException jos lisääminen ei onnistu
+     * TODO: testit
      */
     public void lisaa(Peluri peluri) throws SailoException {
         this.pelurit.lisaa(peluri);
@@ -34,6 +30,7 @@ public class Kerho {
     /**
      * Palauttaa kerhon pelureiden määrän
      * @return Kerhon pelureiden määrä
+     * TODO: Testit
      */
     public int getPelureita() {
         return this.pelurit.getLkm();
