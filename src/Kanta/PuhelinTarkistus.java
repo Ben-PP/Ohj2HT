@@ -4,7 +4,8 @@ package Kanta;
  * Tarkistaa puhelinnumeron oikeellisuuden
  * @author Karel
  * @version 24.10.2021
- *
+ * @version 15.11.2021
+ * TODO: Järkeväksi: Tarkista että tämä luokka on järkevä!
  */
 public class PuhelinTarkistus {
     

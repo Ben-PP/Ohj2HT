@@ -29,7 +29,7 @@
                   <Font name="Arial Bold" size="24.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Vaihe 3" />
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Vaihe 5" />
             <Label alignment="BOTTOM_CENTER" maxWidth="1.7976931348623157E308" prefHeight="40.0" text="Karel Parkkola">
                <font>
                   <Font name="System Bold Italic" size="20.0" />

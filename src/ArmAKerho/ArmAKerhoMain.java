@@ -13,14 +13,13 @@ import Kerho.Kerho;
 /**
  * @author Karel Parkkola
  * @version 15.10.2021
- * TODO: Muista päivittää versio!
+ * @version 15.11.2021
  * 
  * Pääohjelma kerhon käynnistämiseksi
  *
  */
 public class ArmAKerhoMain extends Application {
     
-    // TODO: Testit?
     @Override
     public void start(Stage primaryStage) {
         

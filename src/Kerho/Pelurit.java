@@ -9,9 +9,11 @@ package Kerho;
  * 
  * @author Karel
  * @version 28.10.2021
+ * @version 15.11.2021
  *
  */
 public class Pelurit {
+    
     
     private static final int MAX_PELUREITA  = 5;
     private int lkm = 0;
@@ -53,7 +55,7 @@ public class Pelurit {
      */
     public void lisaa(Peluri peluri) throws SailoException {
         
-        if(lkm >= alkiot.length) throw new SailoException("Liikaa alkioita");   // TODO: Tee niin että voi kasvattaa taulukon kokoa
+        if(lkm >= alkiot.length) throw new SailoException("Liikaa alkioita");   // TODO: Toimivaksi: Taulukon koon täytyy kasvaa pelureita lisätessä
         
         this.alkiot[this.lkm] = peluri;
         lkm++;
@@ -65,6 +67,7 @@ public class Pelurit {
      * @param i paikka josta peluri palautetaan
      * @return peluri
      * @throws IndexOutOfBoundsException jos i ei ole sallitulla alueella
+     * TODO: Testit: anna() Testit Peluri-luokkaan
      */
     public Peluri anna(int i) throws IndexOutOfBoundsException {
         if (i < 0 || this.lkm <= i)

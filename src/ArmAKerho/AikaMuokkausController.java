@@ -1,22 +1,13 @@
 package ArmAKerho;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ResourceBundle;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
-import Kerho.Kerho;
 import Kerho.Paiva;
-import Kerho.Paivat;
-import Kerho.Peluri;
-import ArmAKerho.ArmAKerhoGUIController;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 
 /**
@@ -24,10 +15,10 @@ import javafx.stage.Stage;
  * @author Karel
  * @version 9.11.2021
  * @version 15.11.2021
- * TODO: Kommentit koko dokumenttiin
  */
 public class AikaMuokkausController implements ModalControllerInterface<String[][]> {
     
+    //textfieldit joihin pelaajan peliajat kirjoitetaan
     @FXML private TextField maAlkuH;
     @FXML private TextField maAlkuM;
     @FXML private TextField maLoppuH;
@@ -57,14 +48,19 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
     @FXML private TextField suLoppuH;
     @FXML private TextField suLoppuM;
 
-
+    
     @Override
     public String[][] getResult() {
         return ajatPalautus;
     }
-
+    
+    
+    /**
+     * TODO: Testit: Aikamuokkaus ikkunan alustukseen
+     */
     @Override
     public void handleShown() {
+        //tehdään 2 ulotteinen lista textfieldeistä helpottamaan käsittelyä
         ajat.add(new ArrayList<TextField>(List.of(
                 maAlkuH,
                 maAlkuM,
@@ -113,20 +109,20 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
                 suLoppuH,
                 suLoppuM
                 )));
-        //Alustetaan aikamuokkausikkunan arvot joko "00" tai ennestään olevalle arvolle
+        
+        //Alustetaan aikamuokkausikkunan arvot joko null tai ennestään olevalle arvolle
         for (int i = 0; i < pelurinAjat.length; i++) {
             for (int a = 0; a < pelurinAjat[i].length; a++) {
                 String aika = pelurinAjat[i][a];
-                
                 ajat.get(i).get(a).setText(aika);
             }
         }
     }
 
+    
     @Override
     public void setDefault(String[][] oletus) {
-        // TODO Auto-generated method stub
-        
+        //ei käytetä
     }
     
     
@@ -153,12 +149,20 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
     //================Ei FXML========================================================
     //===============================================================================
     
-    //Taulukko päivistä joka palautetaan kun poistutaan 0= maanantai 6= sunnuntai
-    
+    //2 ulotteinen lista textfieldeistä
     private ArrayList<ArrayList<TextField>> ajat = new ArrayList<>();
+    
+    //2 ulotteinen taulukko ajoista jotka palautetaan kun ikkuna suljetaan
     private String[][] ajatPalautus = new String[7][4];
+    
+    // 2 ulotteinen taulukko pelurin ajoista joilla ikkuna alustetaan
     private String[][] pelurinAjat = new String[7][4];
     
+    
+    /**
+     * Lisää ajat ajatPalautus taulukkoon textfieldeistä
+     * TODO: Testit: Aikojen lisäys
+     */
     private void lisaaAjat() {
         for (int i = 0; i < ajatPalautus.length; i++) {
             for (int a = 0; a < ajatPalautus[i].length; a++) {
@@ -169,6 +173,11 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
     }
     
     
+    /**
+     * Asettaa pelurinAjat taulukkoon ajat joilla ikkuna alustetaan
+     * @param paivat Lista pelurin päivistä
+     * TODO: Testit: Aikojen alustus
+     */
     public void setAjat(List<Paiva> paivat) {
         for (int i = 0; i < paivat.size(); i++) {
             pelurinAjat[i][0] = paivat.get(i).getAlkuAika(false);

@@ -16,6 +16,7 @@ import static Kanta.PuhelinTarkistus.*;
  * 
  * @author Karel
  * @version 28.10.2021
+ * @version 15.11.2021
  *
  */
 public class Peluri {

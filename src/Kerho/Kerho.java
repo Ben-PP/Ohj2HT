@@ -17,7 +17,13 @@ import java.util.List;
  */
 public class Kerho {
     
+    /**
+     * Kerhossa olevat peluri oliot
+     */
     private final Pelurit pelurit = new Pelurit();
+    /**
+     * Kerhossa olevien pelureiden kaikki paiva oliot
+     */
     private final Paivat paivat = new Paivat();
     
     
@@ -25,9 +31,10 @@ public class Kerho {
      * Lisää pelurin kerhoon
      * @param peluri peluri joka lisätään
      * @throws SailoException jos lisääminen ei onnistu
-     * TODO: testit
+     * TODO: Testit: Pelurin lisääminen Kerho-luokka
      */
     public void lisaa(Peluri peluri) throws SailoException {
+        //TODO: Toimivaksi: Peluri alkioiden kasvatus. Tässä vai muualla?
         this.pelurit.lisaa(peluri);
     }
     
@@ -35,13 +42,17 @@ public class Kerho {
     /**
      * Lisää päivän pelurille
      * @param paiv päivä joka lisätään
-     * TODO: testit
+     * TODO: Testit: Päivän lisääminen pelurille. Onko jo testattu?
      */
     public void lisaa(Paiva paiv) {
         paivat.lisaa(paiv);
     }
     
     
+    /**
+     * Poistaa kaikki pelurin päivät
+     * @param peluriId Pelurin id jolta päivät tahdotaan poistaa
+     */
     public void poistaPelurinPaivat(int peluriId) {
         paivat.poistaPelurinPaivat(peluriId);
     }
@@ -50,7 +61,6 @@ public class Kerho {
     /**
      * Palauttaa kerhon pelureiden määrän
      * @return Kerhon pelureiden määrä
-     * TODO: Testit
      */
     public int getPelureita() {
         return this.pelurit.getLkm();
@@ -58,9 +68,9 @@ public class Kerho {
     
     
     /**
-     * Antaa kerhon i:n jäsenen
-     * @param i monesko jäsen (alkee 0:sta)
-     * @return jäsen paikasta i
+     * Antaa kerhon i:n Pelurin
+     * @param i monesko jäsen (alkaa 0:sta)
+     * @return Peluri paikasta i
      */
     public Peluri getPeluri(int i) {
         return this.pelurit.anna(i);

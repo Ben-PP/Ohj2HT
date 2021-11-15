@@ -6,7 +6,10 @@ import java.util.Collection;
 
 /**
  * Paivat luokka
- * TODO: crc kolrtin sisältö
+ * - Pitää yllä varsinaista päivärekisteriä eli osaa lisätä sekä muokata päivää
+ * - Lukee ja kirjoittaa paivat tiedostoon
+ * - osaa etsiä ja lajitella. TODO: Tarvitaanko? Onko paivat-luokan lajittelu tarpeen?
+ * 
  * @author Karel
  * @version 5.11.2021
  * @version 15.11.2021
@@ -14,12 +17,14 @@ import java.util.Collection;
  */
 public class Paivat {
     
+    /**
+     * Lista päivistä jota luokka ylläpitää
+     */
     private Collection<Paiva> alkiot = new ArrayList<Paiva>();
     
     
     /**
      * Lisää päivän
-     * TODO: testit
      * @param paiv päivä joka lisätään
      */
     public void lisaa(Paiva paiv) {
@@ -66,8 +71,15 @@ public class Paivat {
     }
     
     
+    /**
+     * Poistaa kaikki tietyn pelurin päivät listasta
+     * @param peluriId Pelurin id jonka päivät poistetaan
+     * TODO: Testit: Päivien poistaminen
+     */
     public void poistaPelurinPaivat(int peluriId) {
+        //Väliaikainen lista johon kerätään poistettavat päivät
         Collection<Paiva> poistettavat = new ArrayList<Paiva>();
+        //Poistetaan kaikki samat alkiot kun verrataan poistettavat listaa alkioihin
         for (Paiva paiv : alkiot) {
             if(paiv.getPeluriId() == peluriId) poistettavat.add(paiv);
         }

@@ -8,13 +8,11 @@ import javafx.stage.Stage;
 
 
 /**
+ * Kontrolleri kerhoa kysyttäessä aukeavalle ikkunalle
  * 
  * @author Karel Parkkola
  * @version 15.10.2021
- * TODO: Muista päivittää versio!
- *
- *Kontrolleri kerhoa kysyttäessä aukeavalle ikkunalle
- *
+ * @version 15.11.2021
  */
 public class KerhonNimiController implements ModalControllerInterface<String> {
     
@@ -48,7 +46,7 @@ public class KerhonNimiController implements ModalControllerInterface<String> {
     
     /**
      * Mitä tapahtuu kun painetaan OK nappia
-     * TODO: Testit
+     * TODO: Testit: Kerhon kysyminen FXML
      */
     @FXML private void handleOK() {
         vastaus = textVastaus.getText();
@@ -69,7 +67,8 @@ public class KerhonNimiController implements ModalControllerInterface<String> {
      * @param modalityStage mille ollaan modaalisia. Jos null niin sovellukselle
      * @param oletus Oletusnimi joka näytetään
      * @return null jos painetaan Cancel, muuten kerhon nimi joka kirjoitettiin.
-     * TODO: Testit
+     * TODO: Testit: Kerhon kysyminen
+     * TODO: Päivitä: Kerhon nimen kysyminen tarvittaessa
      */
     public static String kysyNimi(Stage modalityStage, String oletus) {
         return ModalController.showModal(

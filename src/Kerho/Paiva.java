@@ -3,16 +3,20 @@ package Kerho;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import static Kanta.PuhelinTarkistus.rand;
-
 /**
  * Luokka päiville
- * TODO: crc kortin sisältö
+ * - Tietää Paivan kentät
+ * - Osaa tarkistaa tietyn kentän oikeellisuuden
+ * - Osaa muuttaa 1|0|12:00|14:00|...| merkkijonon päivän tiedoiksi
+ * - Osaa antaa merkkijonona i:n kentän tiedot
+ * - Osaa laittaa merkkijonon i:neksi kentäksi
+ * 
  * @author Karel
  * @version 5.11.2021
  * @version 9.11.2021
  * @version 15.11.2021
- *
+ * TODO: Toimivaksi: Oikeellisuustarkistus
+ * TODO: Toimivaksi: Merkkijonojen lukeminen ja kirjoittaminen. Paiva-luokka
  */
 public class Paiva {
     
@@ -24,6 +28,7 @@ public class Paiva {
     private String loppuAikaM;
     
     //0=maanantai -> 6=sunnuntai
+    //TODO: Tarvitaanko? int viikonPaiva Paiva-luokassa
     private int viikonPaiva;
     
     
@@ -36,7 +41,7 @@ public class Paiva {
     
     
     /**
-     * 
+     * Alustaa paivan täydellisesti
      * @param Id sdfs
      * @param alkuAH sdfs
      * @param alkuAM sdf
@@ -57,6 +62,7 @@ public class Paiva {
     /**
      * Alustetaan tietyn pelurin päivä
      * @param peluriId pelurin viitenumero
+     * TODO: Tarvitaanko? Paivan alustus pelkällä pelurin id:llä
      */
     public Paiva(int peluriId) {
         this.peluriId = peluriId;
@@ -102,9 +108,10 @@ public class Paiva {
     
     
     /**
-     * Palauttaa päivän alkuajana tunnit tai minuutit
+     * Palauttaa päivän alkuajan tunnit tai minuutit
      * @param minuutit true, jos tahdotaan minuuti ja false jos tahdotaan tunnit
      * @return alkuajan tunnit tai minuutit
+     * TODO: Testit: getAlkuAika
      */
     public String getAlkuAika(boolean minuutit) {
         if(minuutit) return alkuAikaM;
@@ -116,6 +123,7 @@ public class Paiva {
      * Palauttaa päivän loppuajan tunnit tai minuutit
      * @param minuutit  true jos tahdotaan minuutit ja false jos tahdotaan tunnit
      * @return loppuajan tunnit tai minuutit
+     * TODO: Testit: getLoppuAika
      */
     public String getLoppuAika(boolean minuutit) {
         if(minuutit) return loppuAikaM;
@@ -123,7 +131,12 @@ public class Paiva {
     }
     
     
-    
+    /**
+     * Asettaa alkuajan tunnit tai minuutit
+     * @param aika Aika joka asetetaan
+     * @param minuutit true jos tahdotaan asettaa minuutit, false jos tunnit
+     * TODO: Tarvitaanko? setAlkuAika, 0 referenssiä 15.11.2021
+     */
     public void setAlkuAika(String aika, boolean minuutit) {
         if(minuutit) {
             alkuAikaM = aika;
@@ -148,7 +161,11 @@ public class Paiva {
     }
     
     
-    
+    /**
+     * Asettaa päivän peluriId:n
+     * @param id pelurin id
+     * TODO: Tarvitaanko? setPeluriId, 0 referenssiä 15.11.2021
+     */
     public void setPeluriId(int id) {
         peluriId = id;
     }

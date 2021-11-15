@@ -1,23 +1,24 @@
 package ArmAKerho;
 
-import Kerho.Peluri;
-import fi.jyu.mit.fxgui.ModalController;
-import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
+import fi.jyu.mit.fxgui.ModalController;
+import fi.jyu.mit.fxgui.ModalControllerInterface;
+
+import Kerho.Peluri;
+
 /**
+ * Kontrolleri pelureiden luonti-ikkunalle
  * 
  * @author Karel Parkkola
  * @version 28.10.2021
- * TODO: Muista päivittää versio!
- * 
- * Kontrolleri pelureiden luonti-ikkunalle
- *
+ * @version 15.11.2021
+ * TODO: Toimivaksi: Oikeilla tiedoilla toimivaksi
  */
 public class PeluriLuontiController implements ModalControllerInterface<Peluri> {
-    // TODO: Kaikki toiminnot joita pelaajan luomiseen tarvitaan
     
+    //Ikkunan sulkemista varten
     @FXML private TextField nimi;
 
     
@@ -30,16 +31,14 @@ public class PeluriLuontiController implements ModalControllerInterface<Peluri> 
     
     @Override
     public void handleShown() {
-        // TODO Auto-generated method stub
-        
+        //
     }
     
     
     
     @Override
     public void setDefault(Peluri oletus) {
-        // TODO Auto-generated method stub
-        
+        //
     }
     
     
@@ -66,15 +65,19 @@ public class PeluriLuontiController implements ModalControllerInterface<Peluri> 
     // Koodin sisäiset asiat--------------------------------------------
     //------------------------------------------------------------------
     
+    /**
+     * Peluri joka luodaan ja lopuksi palautetaan
+     */
     private Peluri peluri;
     
     /**
      * Tehdään uusi peluri joka voidaan lisätä kerhoon
+     * TODO: Testit: Pelurin luominen
      */
     private void uusiPeluri() {
         peluri = new Peluri();
         peluri.rekisteroi();
-        peluri.taytaTestiTiedoilla(); // TODO: korvaa aikanaan oikeilla tiedoilla
+        peluri.taytaTestiTiedoilla(); // TODO: Toimivaksi: Pelurin luominen oikeilla tiedoilla
         
         
         }

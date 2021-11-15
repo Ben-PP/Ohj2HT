@@ -7,15 +7,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 
 /**
+ * Tulostuksen hoitava kontrolleri
+ * 
  * @author Karel
  * @version 15.10.2021
- * TODO: Muista päivittää versio!
- *
- * Tulostuksen hoitava kontrolleri
- *
+ * @version 15.11.2021
+ * TODO: Toimivaksi: Tulostus controller
  */
 public class TulostusController implements ModalControllerInterface<String>{
-
+    
+    //Alue johon tulostettava teksti kirjoitetaan
     @FXML TextArea tulostusAlue;
     
     
@@ -32,9 +33,6 @@ public class TulostusController implements ModalControllerInterface<String>{
     }
     
     
-    /**
-     * Mitä tehdään kun dialogi on näytetty
-     */
     @Override
     public void handleShown() {
         //
@@ -53,14 +51,14 @@ public class TulostusController implements ModalControllerInterface<String>{
      * Tulostaa tiedot
      */
     @FXML private void handleTulosta() {
-        // TODO: Tulostus toimimaan
+        // TODO: Toimivaksi: Tulostaminen controller FXML
         Dialogs.showMessageDialog("Ei osata vielä tulostaa");
     }
     
     /**
      * Näyttää tulostusalueessa tekstin
      * @param tulostus tulostettava teskti
-     * TODO: Testit
+     * TODO: Testit: Tulostamisen testit
      */
     public static void tulosta(String tulostus) {
         ModalController.showModeless(TulostusController.class.getResource("TulostusGUIView.fxml"),
