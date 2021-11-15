@@ -1,13 +1,22 @@
 package ArmAKerho;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ResourceBundle;
 
+import Kerho.Kerho;
 import Kerho.Paiva;
+import Kerho.Paivat;
+import Kerho.Peluri;
+import ArmAKerho.ArmAKerhoGUIController;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 
 /**
@@ -47,8 +56,8 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
     @FXML private TextField suAlkuM;
     @FXML private TextField suLoppuH;
     @FXML private TextField suLoppuM;
-    
-    
+
+
     @Override
     public String[][] getResult() {
         return ajatPalautus;
@@ -104,6 +113,14 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
                 suLoppuH,
                 suLoppuM
                 )));
+        //Alustetaan aikamuokkausikkunan arvot joko "00" tai ennestään olevalle arvolle
+        for (int i = 0; i < pelurinAjat.length; i++) {
+            for (int a = 0; a < pelurinAjat[i].length; a++) {
+                String aika = pelurinAjat[i][a];
+                
+                ajat.get(i).get(a).setText(aika);
+            }
+        }
     }
 
     @Override
@@ -140,12 +157,24 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
     
     private ArrayList<ArrayList<TextField>> ajat = new ArrayList<>();
     private String[][] ajatPalautus = new String[7][4];
+    private String[][] pelurinAjat = new String[7][4];
     
     private void lisaaAjat() {
         for (int i = 0; i < ajatPalautus.length; i++) {
             for (int a = 0; a < ajatPalautus[i].length; a++) {
                 ajatPalautus[i][a] = ajat.get(i).get(a).getText();
+                if(ajatPalautus[i][a] == "") ajatPalautus[i][a] = null;
             }
+        }
+    }
+    
+    
+    public void setAjat(List<Paiva> paivat) {
+        for (int i = 0; i < paivat.size(); i++) {
+            pelurinAjat[i][0] = paivat.get(i).getAlkuAika(false);
+            pelurinAjat[i][1] = paivat.get(i).getAlkuAika(true);
+            pelurinAjat[i][2] = paivat.get(i).getLoppuAika(false);
+            pelurinAjat[i][3] = paivat.get(i).getLoppuAika(true);
         }
     }
 }

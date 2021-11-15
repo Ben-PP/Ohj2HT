@@ -2,6 +2,7 @@ package ArmAKerho;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -119,7 +120,9 @@ public class ArmAKerhoGUIController implements Initializable {
     @FXML
     private void handleAikaMuokkaus() {
         if(peluriKohdalla == null) return;
-        ajat = ModalController.showModal(ArmAKerhoGUIController.class.getResource("aikaMuokkausGUIView.fxml"), "Ajat", null, null);
+
+        ajat = ModalController.<String[][],AikaMuokkausController>showModal(AikaMuokkausController.class.getResource("aikaMuokkausGUIView.fxml"), "Tiedot", null, ajat,ctrl->ctrl.setAjat(kerho.getPaivat(peluriKohdalla)));
+                //ModalController.showModal(ArmAKerhoGUIController.class.getResource("aikaMuokkausGUIView.fxml"), "Ajat", null, ctrl ->ctrl.setAjat(peluriKohdalla, ajat));
         //tulostus debuggausta varten=========================
         for (int i = 0; i < ajat.length; i++) {
             for(int a = 0; a < ajat[i].length; a++) {
@@ -239,9 +242,12 @@ public class ArmAKerhoGUIController implements Initializable {
         }
         for(int i = 0; i < paivatLabels.size(); i++) {
             Paiva p = pelurinPaivat.get(i);
-            paivatLabels.get(i).setText(p.getAlkuAika(false)+":"+p.getAlkuAika(true)+" - "+p.getLoppuAika(false)+":"+p.getLoppuAika(true));
+            if(p.getAlkuAika(false) == null || p.getAlkuAika(true) == null || p.getLoppuAika(false) == null || p.getLoppuAika(true) == null) {
+                paivatLabels.get(i).setText("Ei käy!");
+            } else {
+                paivatLabels.get(i).setText(p.getAlkuAika(false)+":"+p.getAlkuAika(true)+" - "+p.getLoppuAika(false)+":"+p.getLoppuAika(true));
+            }
         }
-
     }
     
     
