@@ -29,6 +29,9 @@ public class Peluri {
     private static int seuraavaId   = 1;
     
     
+    
+    
+    
     /**
      * Tulostaa jäsenen tiedot
      * @param out Tietovirta johon tiedot tulostetaan

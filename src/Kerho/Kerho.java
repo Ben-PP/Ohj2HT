@@ -1,5 +1,7 @@
 package Kerho;
 
+import java.util.List;
+
 /**
  * Kerholuokka
  * 
@@ -9,11 +11,14 @@ package Kerho;
  * 
  * @author Karel
  * @version 28.10.2021
+ * @version 5.11.2021
+ * @version 15.11.2021
  *
  */
 public class Kerho {
     
-    private Pelurit pelurit = new Pelurit();
+    private final Pelurit pelurit = new Pelurit();
+    private final Paivat paivat = new Paivat();
     
     
     /**
@@ -24,6 +29,21 @@ public class Kerho {
      */
     public void lisaa(Peluri peluri) throws SailoException {
         this.pelurit.lisaa(peluri);
+    }
+    
+    
+    /**
+     * Lisää päivän pelurille
+     * @param paiv päivä joka lisätään
+     * TODO: testit
+     */
+    public void lisaa(Paiva paiv) {
+        paivat.lisaa(paiv);
+    }
+    
+    
+    public void poistaPelurinPaivat(int peluriId) {
+        paivat.poistaPelurinPaivat(peluriId);
     }
     
     
@@ -44,6 +64,42 @@ public class Kerho {
      */
     public Peluri getPeluri(int i) {
         return this.pelurit.anna(i);
+    }
+    
+    
+    /**
+     * Palauttaa pelurin pelipäivät
+     * @param peluri peluri jonka päivät halutaan
+     * @return pelurin päivät
+     * @example
+     * <pre name="test">
+     *  #import java.util.*;
+     *  
+     *  Kerho kerho = new Kerho();
+     *  Peluri ben1 = new Peluri(), ben2 = new Peluri(), ben3 = new Peluri();
+     *  ben1.rekisteroi(); ben2.rekisteroi(); ben3.rekisteroi();
+     *  int id1 = ben1.getPeluriId();
+     *  int id2 = ben2.getPeluriId();
+     *  Paiva maanantai1 = new Paiva(id1); kerho.lisaa(maanantai1);
+     *  Paiva tiistai1 = new Paiva(id1); kerho.lisaa(tiistai1);
+     *  Paiva maanantai2 = new Paiva(id2); kerho.lisaa(maanantai2);
+     *  Paiva tiistai2 = new Paiva(id2); kerho.lisaa(tiistai2);
+     *  Paiva keskiviikko2 = new Paiva(id2); kerho.lisaa(keskiviikko2);
+     *  
+     *  List<Paiva> loytyneet;
+     *  loytyneet = kerho.getPaivat(ben3);
+     *  loytyneet.size() === 0;
+     *  loytyneet = kerho.getPaivat(ben1);
+     *  loytyneet.size() === 2;
+     *  loytyneet.get(0) == maanantai1 === true;
+     *  loytyneet.get(1) == tiistai1 === true;
+     *  loytyneet = kerho.getPaivat(ben2);
+     *  loytyneet.size() === 3;
+     *  loytyneet.get(0) == maanantai2 === true;
+     * </pre>
+     */
+    public List<Paiva> getPaivat(Peluri peluri){
+        return paivat.annaPaivat(peluri.getPeluriId());
     }
     
 

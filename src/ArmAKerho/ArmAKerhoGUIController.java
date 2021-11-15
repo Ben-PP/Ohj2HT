@@ -3,12 +3,15 @@ package ArmAKerho;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import fi.jyu.mit.fxgui.Dialogs;
@@ -16,12 +19,14 @@ import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
 
 import Kerho.Kerho;
+import Kerho.Paiva;
 import Kerho.Peluri;
 import Kerho.SailoException;
 
 /**
  * @author Karel Parkkola
  * @version 15.10.2021
+ * @version 15.11.2021
  * TODO: Muista päivittää versio!
  * 
  * Pääikkunan kontrolleri
@@ -35,6 +40,13 @@ public class ArmAKerhoGUIController implements Initializable {
     @FXML private TextField nimiTxtField;
     @FXML private TextField pNimiTxtField;
     @FXML private TextField tTilaTxtField;
+    @FXML private Label maanantaiLabel;
+    @FXML private Label tiistaiLabel;
+    @FXML private Label keskiviikkoLabel;
+    @FXML private Label torstaiLabel;
+    @FXML private Label perjantaiLabel;
+    @FXML private Label lauantaiLabel;
+    @FXML private Label sunnuntaiLabel;
     
     //Kerhon nimi. Oletus on valmiiksi kirjoitettuna kenttään.
     private String kerhonnimi = "ArmA Kerho";
@@ -72,18 +84,7 @@ public class ArmAKerhoGUIController implements Initializable {
     private void handleUusiPeluri() {
         
         Peluri peluri = ModalController.showModal(ArmAKerhoGUIController.class.getResource("PeluriLuontiGUIView.fxml"), "Peluri", null, null);
-
-        try {
-            
-            //Koittaa avata pelurin luonti ikkunan ja tehdä annettujen tietojen pohjalta uuden pelurin ja lopuksi lisää sen kerhoon
-            kerho.lisaa(peluri);
-            hae(peluri.getPeluriId());
-            
-        } catch (SailoException e) {
-            
-            Dialogs.showMessageDialog("Ongelmia uuden pelurin luomisessa " + e.getMessage());
-            return;
-        }
+        lisaaPeluri(peluri);
     }
     
     
@@ -117,20 +118,17 @@ public class ArmAKerhoGUIController implements Initializable {
      */
     @FXML
     private void handleAikaMuokkaus() {
-        // TODO: Aikamuokkaus toimivaksi, tämäkin hyvä modaalisena?
-        ModalController.showModal(ArmAKerhoGUIController.class.getResource("aikaMuokkausGUIView.fxml"), "Ajat", null, "");
-        /**
-        try {
-            FXMLLoader ldr = new FXMLLoader(getClass().getResource("aikaMuokkausGUIView.fxml"));
-            Parent root1 = (Parent) ldr.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root1));
-            stage.setTitle("Peliajat");
-            stage.show();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
+        if(peluriKohdalla == null) return;
+        ajat = ModalController.showModal(ArmAKerhoGUIController.class.getResource("aikaMuokkausGUIView.fxml"), "Ajat", null, null);
+        //tulostus debuggausta varten=========================
+        for (int i = 0; i < ajat.length; i++) {
+            for(int a = 0; a < ajat[i].length; a++) {
+                System.out.print(ajat[i][a]+",");
+            }
+            System.out.println();
         }
-        */
+        //taas toiminnallista================================
+        muokkaaAikoja(ajat);
     }
     
     
@@ -177,14 +175,46 @@ public class ArmAKerhoGUIController implements Initializable {
      // --------------------------------------------------------------------------------------------------------
     
     private Kerho kerho;
+    private Peluri peluriKohdalla;
+    private ArrayList<Label> paivatLabels;
+    private String[][] ajat;
     
     
     /**
      * Alustaa pääikkunan
      */
     private void alusta() {
+        paivatLabels = new ArrayList<Label>(List.of(
+                maanantaiLabel,
+                tiistaiLabel,
+                keskiviikkoLabel,
+                torstaiLabel,
+                perjantaiLabel,
+                lauantaiLabel,
+                sunnuntaiLabel
+                ));
+        
         chooserPelurit.clear();
         chooserPelurit.addSelectionListener(e -> naytaPeluri());
+    }
+    
+    /**
+     * Lisää pelurin
+     * @param peluri peluri joka lisätään
+     * TODO: Testit
+     */
+    private void lisaaPeluri(Peluri peluri) {
+        try {
+            
+            //Koittaa avata pelurin luonti ikkunan ja tehdä annettujen tietojen pohjalta uuden pelurin ja lopuksi lisää sen kerhoon
+            kerho.lisaa(peluri);
+            hae(peluri.getPeluriId());
+            
+        } catch (SailoException e) {
+            
+            Dialogs.showMessageDialog("Ongelmia uuden pelurin luomisessa " + e.getMessage());
+            return;
+        }
     }
     
     
@@ -192,13 +222,26 @@ public class ArmAKerhoGUIController implements Initializable {
      * Näyttää listalta valitun pelurin tiedot
      */
     private void naytaPeluri() {
-        Peluri peluriKohdalla = chooserPelurit.getSelectedObject();
+        peluriKohdalla = chooserPelurit.getSelectedObject();
         
         if (peluriKohdalla == null) return;
         
         nimiTxtField.setText(peluriKohdalla.getNimi());
         pNimiTxtField.setText(peluriKohdalla.getPNimi());
         tTilaTxtField.setText(Integer.toString(peluriKohdalla.getTTila()));
+        
+        List<Paiva> pelurinPaivat = kerho.getPaivat(peluriKohdalla);
+        if(pelurinPaivat.size() <= 0) {
+            for(int i = 0; i < paivatLabels.size(); i++) {
+                paivatLabels.get(i).setText("Ei käy!");
+            }
+            return;
+        }
+        for(int i = 0; i < paivatLabels.size(); i++) {
+            Paiva p = pelurinPaivat.get(i);
+            paivatLabels.get(i).setText(p.getAlkuAika(false)+":"+p.getAlkuAika(true)+" - "+p.getLoppuAika(false)+":"+p.getLoppuAika(true));
+        }
+
     }
     
     
@@ -290,5 +333,16 @@ public class ArmAKerhoGUIController implements Initializable {
             chooserPelurit.add(peluri.getNimi(), peluri);
         }
         chooserPelurit.setSelectedIndex(index);
+    }
+    
+    
+    
+    private void muokkaaAikoja(String[][] aikaTaulukko) {
+        kerho.poistaPelurinPaivat(peluriKohdalla.getPeluriId());
+        for (int i = 0; i < aikaTaulukko.length; i++) {
+            Paiva pv = new Paiva(peluriKohdalla.getPeluriId(), aikaTaulukko[i][0], aikaTaulukko[i][1], aikaTaulukko[i][2], aikaTaulukko[i][3], i);
+            kerho.lisaa(pv);
+        }
+        hae(peluriKohdalla.getPeluriId());
     }
 }

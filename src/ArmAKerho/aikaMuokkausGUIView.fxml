@@ -9,12 +9,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.jyu.mit.fxgui.ModalController">
+<BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ArmAKerho.AikaMuokkausController">
    <bottom>
       <HBox alignment="CENTER_RIGHT" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#handleDefaultCancel" text="Peruuta" />
-            <Button mnemonicParsing="false" onAction="#handleDefaultOK" text="OK" />
+            <Button mnemonicParsing="false" onAction="#handleCancel" text="Peruuta" />
+            <Button mnemonicParsing="false" onAction="#handleOk" text="OK" />
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" right="10.0" />
@@ -39,7 +39,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="maAlkuH" prefWidth="30.0" text="00" />
                   <Label text=":">
                      <font>
                         <Font size="13.0" />
@@ -48,7 +48,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="maAlkuM" prefWidth="30.0" text="00" />
                   <Label text="-">
                      <font>
                         <Font size="14.0" />
@@ -57,7 +57,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="maLoppuH" prefWidth="30.0" text="00" />
                   <Label text=":">
                      <font>
                         <Font size="13.0" />
@@ -66,7 +66,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="maLoppuM" prefWidth="30.0" text="00" />
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT">
@@ -79,7 +79,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="tiAlkuH" prefWidth="30.0" text="00" />
                   <Label text=":">
                      <font>
                         <Font size="13.0" />
@@ -88,7 +88,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="tiAlkuM" prefWidth="30.0" text="00" />
                   <Label text="-">
                      <font>
                         <Font size="14.0" />
@@ -97,7 +97,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="tiLoppuH" prefWidth="30.0" text="00" />
                   <Label text=":">
                      <font>
                         <Font size="13.0" />
@@ -106,7 +106,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="tiLoppuM" prefWidth="30.0" text="00" />
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT">
@@ -119,7 +119,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="keAlkuH" prefWidth="30.0" text="00" />
                   <Label text=":">
                      <font>
                         <Font size="13.0" />
@@ -128,7 +128,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="keAlkuM" prefWidth="30.0" text="00" />
                   <Label text="-">
                      <font>
                         <Font size="14.0" />
@@ -137,7 +137,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="keLoppuH" prefWidth="30.0" text="00" />
                   <Label text=":">
                      <font>
                         <Font size="13.0" />
@@ -146,7 +146,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="keLoppuM" prefWidth="30.0" text="00" />
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT">
@@ -159,7 +159,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="toAlkuH" prefWidth="30.0" text="00" />
                   <Label text=":">
                      <font>
                         <Font size="13.0" />
@@ -168,7 +168,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="toAlkuM" prefWidth="30.0" text="00" />
                   <Label text="-">
                      <font>
                         <Font size="14.0" />
@@ -177,7 +177,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="toLoppuH" prefWidth="30.0" text="00" />
                   <Label text=":">
                      <font>
                         <Font size="13.0" />
@@ -186,7 +186,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="toLoppuM" prefWidth="30.0" text="00" />
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT">
@@ -199,7 +199,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="peAlkuH" prefWidth="30.0" text="00" />
                   <Label text=":">
                      <font>
                         <Font size="13.0" />
@@ -208,7 +208,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="peAlkuM" prefWidth="30.0" text="00" />
                   <Label text="-">
                      <font>
                         <Font size="14.0" />
@@ -217,7 +217,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="peLoppuH" prefWidth="30.0" text="00" />
                   <Label text=":">
                      <font>
                         <Font size="13.0" />
@@ -226,7 +226,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="peLoppuM" prefWidth="30.0" text="00" />
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT">
@@ -239,7 +239,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="laAlkuH" prefWidth="30.0" text="00" />
                   <Label text=":">
                      <font>
                         <Font size="13.0" />
@@ -248,7 +248,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="laAlkuM" prefWidth="30.0" text="00" />
                   <Label text="-">
                      <font>
                         <Font size="14.0" />
@@ -257,7 +257,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="laLoppuH" prefWidth="30.0" text="00" />
                   <Label text=":">
                      <font>
                         <Font size="13.0" />
@@ -266,7 +266,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="laLoppuM" prefWidth="30.0" text="00" />
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT">
@@ -279,7 +279,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="suAlkuH" prefWidth="30.0" text="00" />
                   <Label text=":">
                      <font>
                         <Font size="13.0" />
@@ -288,7 +288,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="suAlkuM" prefWidth="30.0" text="00" />
                   <Label text="-">
                      <font>
                         <Font size="14.0" />
@@ -297,7 +297,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="suLoppuH" prefWidth="30.0" text="00" />
                   <Label text=":">
                      <font>
                         <Font size="13.0" />
@@ -306,7 +306,7 @@
                         <Insets left="3.0" right="3.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="30.0" />
+                  <TextField fx:id="suLoppuM" prefWidth="30.0" text="00" />
                </children>
             </HBox>
          </children>

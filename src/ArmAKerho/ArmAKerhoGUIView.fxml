@@ -135,37 +135,37 @@
                                           </VBox>
                                           <VBox alignment="CENTER_LEFT">
                                              <children>
-                                                <Label text="18:00 - 22:00">
+                                                <Label fx:id="maanantaiLabel" text="Ei käy!">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label text="18:00 - 22:00">
+                                                <Label fx:id="tiistaiLabel" text="Ei käy!">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label text="Ei käy!">
+                                                <Label fx:id="keskiviikkoLabel" text="Ei käy!">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label text="14:00 - 15:00">
+                                                <Label fx:id="torstaiLabel" text="Ei käy!">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label text="Ei käy!">
+                                                <Label fx:id="perjantaiLabel" text="Ei käy!">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label text="Ei käy!">
+                                                <Label fx:id="lauantaiLabel" text="Ei käy!">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label text="Ei käy!">
+                                                <Label fx:id="sunnuntaiLabel" text="Ei käy!">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
