@@ -1,5 +1,6 @@
 package Kerho;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  * @version 28.10.2021
  * @version 5.11.2021
  * @version 15.11.2021
- *
+ * @version 28.11.2021
  */
 public class Kerho {
     
@@ -28,14 +29,45 @@ public class Kerho {
     
     
     /**
+     * Lukee kerhon tiedot tiedostoista
+     * @param tiedNimiPelurit tiedoston polku jossa pelurit sijaitsee
+     * @param tiedNimiPaivat tiedoston polku jossa paivat sijaitsee
+     */
+    public void lueTiedostosta(String tiedNimiPelurit, String tiedNimiPaivat){
+        pelurit.lueTiedostosta(tiedNimiPelurit);
+        paivat.lueTiedostosta(tiedNimiPaivat);
+    }
+    
+    
+    /**
+     * Tallentaa kerhon tiedot
+     * @param tiedNimiPelurit tiedoston polku jossa pelurit sijaitsee
+     * @param tiedNimiPaivat tiedNimiPaivat tiedoston polku jossa paivat sijaitsee
+     */
+    public void tallenna(String tiedNimiPelurit, String tiedNimiPaivat) {
+        try {
+            pelurit.tallenna(tiedNimiPelurit);
+        } catch (IOException e) {
+            System.err.println("Pelureita ei voitu tallentaa! " + e.getMessage());
+        }
+        try {
+            paivat.tallenna(tiedNimiPaivat);
+        } catch (IOException e){
+            System.err.println("Päiviä ei voitu tallentaa! "+ e.getMessage());
+        }
+    }
+    
+    
+    /**
      * Lisää pelurin kerhoon
      * @param peluri peluri joka lisätään
-     * @throws SailoException jos lisääminen ei onnistu
      * TODO: Testit: Pelurin lisääminen Kerho-luokka
      */
-    public void lisaa(Peluri peluri) throws SailoException {
-        //TODO: Toimivaksi: Peluri alkioiden kasvatus. Tässä vai muualla?
+    public void lisaa(Peluri peluri) {
         this.pelurit.lisaa(peluri);
+        for (int i = 0; i < 7; i++) {
+            this.paivat.lisaa(new Paiva(peluri.getPeluriId(), i));
+        }
     }
     
     
@@ -90,11 +122,11 @@ public class Kerho {
      *  ben1.rekisteroi(); ben2.rekisteroi(); ben3.rekisteroi();
      *  int id1 = ben1.getPeluriId();
      *  int id2 = ben2.getPeluriId();
-     *  Paiva maanantai1 = new Paiva(id1); kerho.lisaa(maanantai1);
-     *  Paiva tiistai1 = new Paiva(id1); kerho.lisaa(tiistai1);
-     *  Paiva maanantai2 = new Paiva(id2); kerho.lisaa(maanantai2);
-     *  Paiva tiistai2 = new Paiva(id2); kerho.lisaa(tiistai2);
-     *  Paiva keskiviikko2 = new Paiva(id2); kerho.lisaa(keskiviikko2);
+     *  Paiva maanantai1 = new Paiva(id1, 0); kerho.lisaa(maanantai1);
+     *  Paiva tiistai1 = new Paiva(id1, 1); kerho.lisaa(tiistai1);
+     *  Paiva maanantai2 = new Paiva(id2, 0); kerho.lisaa(maanantai2);
+     *  Paiva tiistai2 = new Paiva(id2, 0); kerho.lisaa(tiistai2);
+     *  Paiva keskiviikko2 = new Paiva(id2, 3); kerho.lisaa(keskiviikko2);
      *  
      *  List<Paiva> loytyneet;
      *  loytyneet = kerho.getPaivat(ben3);
@@ -129,16 +161,12 @@ public class Kerho {
         ben2.rekisteroi();
         ben2.taytaTestiTiedoilla();
         
-        try {
-            kerho.lisaa(ben1);
-            kerho.lisaa(ben2);
-            kerho.lisaa(ben1);
-            kerho.lisaa(ben2);
-            kerho.lisaa(ben1);
-            kerho.lisaa(ben2);
-        } catch (SailoException e) {
-            System.err.println(e.getMessage());
-        }
+        kerho.lisaa(ben1);
+        kerho.lisaa(ben2);
+        kerho.lisaa(ben1);
+        kerho.lisaa(ben2);
+        kerho.lisaa(ben1);
+        kerho.lisaa(ben2);
         
         for (int i = 0; i < kerho.getPelureita(); i++) {
             Peluri peluri = kerho.getPeluri(i);

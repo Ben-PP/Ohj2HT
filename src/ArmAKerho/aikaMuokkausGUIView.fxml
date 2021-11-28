@@ -11,7 +11,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ArmAKerho.AikaMuokkausController">
    <bottom>
-      <HBox alignment="CENTER_RIGHT" spacing="20.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_RIGHT" spacing="15.0" BorderPane.alignment="CENTER">
          <children>
             <Button mnemonicParsing="false" onAction="#handleCancel" text="Peruuta" />
             <Button mnemonicParsing="false" onAction="#handleOk" text="OK" />
@@ -29,7 +29,11 @@
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <HBox alignment="CENTER_RIGHT">
+            <Label text="Anna ajat muodossa HH:MM - HH:MM" />
+            <Label text="00:00 - 00:00 jos päivä ei käy" />
+            <Label fx:id="virheLabel1" />
+            <Label fx:id="virheLabel2" />
+            <HBox fx:id="maanantai" alignment="CENTER_RIGHT">
                <children>
                   <Label text="Maanantai:">
                      <font>
@@ -69,7 +73,7 @@
                   <TextField fx:id="maLoppuM" prefWidth="30.0" text="00" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT">
+            <HBox fx:id="tiistai" alignment="CENTER_RIGHT">
                <children>
                   <Label text="Tiistai:">
                      <font>
@@ -109,7 +113,7 @@
                   <TextField fx:id="tiLoppuM" prefWidth="30.0" text="00" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT">
+            <HBox fx:id="keskiviikko" alignment="CENTER_RIGHT">
                <children>
                   <Label text="Keskiviikko:">
                      <font>
@@ -149,7 +153,7 @@
                   <TextField fx:id="keLoppuM" prefWidth="30.0" text="00" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT">
+            <HBox fx:id="torstai" alignment="CENTER_RIGHT">
                <children>
                   <Label text="Torstai:">
                      <font>
@@ -189,7 +193,7 @@
                   <TextField fx:id="toLoppuM" prefWidth="30.0" text="00" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT">
+            <HBox fx:id="perjantai" alignment="CENTER_RIGHT">
                <children>
                   <Label text="Perjantai:">
                      <font>
@@ -229,7 +233,7 @@
                   <TextField fx:id="peLoppuM" prefWidth="30.0" text="00" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT">
+            <HBox fx:id="lauantai" alignment="CENTER_RIGHT">
                <children>
                   <Label text="Lauantai:">
                      <font>
@@ -269,7 +273,7 @@
                   <TextField fx:id="laLoppuM" prefWidth="30.0" text="00" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT">
+            <HBox fx:id="sunnuntai" alignment="CENTER_RIGHT">
                <children>
                   <Label text="Sunnuntai:">
                      <font>

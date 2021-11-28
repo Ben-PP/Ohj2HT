@@ -1,5 +1,15 @@
 package Kerho;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
 /**
  * Pelurit luokka
  * 
@@ -10,14 +20,15 @@ package Kerho;
  * @author Karel
  * @version 28.10.2021
  * @version 15.11.2021
- *
+ * @version 28.11.2021
  */
-public class Pelurit {
+public class Pelurit implements Iterable<Peluri> {
     
     
     private static final int MAX_PELUREITA  = 5;
     private int lkm = 0;
     private Peluri[] alkiot;
+    private boolean muutettu = false;
     
     
     /**
@@ -31,10 +42,8 @@ public class Pelurit {
     /**
      * Lisää pelurin taulukkoon
      * @param peluri peluri joka lisätään
-     * @throws SailoException jos tietorakenne on jo täynnä
      * @example
      * <pre name="test">
-     *  #THROWS SailoException
      *  Pelurit pelurit = new Pelurit();
      *  Peluri ben1 = new Peluri();
      *  Peluri ben2 = new Peluri();
@@ -50,15 +59,21 @@ public class Pelurit {
      *  pelurit.anna(3) === ben1; #THROWS IndexOutOfBoundsException
      *  pelurit.lisaa(ben1); pelurit.getLkm() === 4;
      *  pelurit.lisaa(ben1); pelurit.getLkm() === 5;
-     *  pelurit.lisaa(ben1); #THROWS SailoException
+     *  pelurit.lisaa(ben1); pelurit.getLkm() === 6;
      * </pre>
      */
-    public void lisaa(Peluri peluri) throws SailoException {
+    public void lisaa(Peluri peluri) {
         
-        if(lkm >= alkiot.length) throw new SailoException("Liikaa alkioita");   // TODO: Toimivaksi: Taulukon koon täytyy kasvaa pelureita lisätessä
-        
+        if(lkm >= alkiot.length) {
+            Peluri[] uusi = new Peluri[lkm+5];
+            for(int i = 0; i < lkm; i++) {
+                uusi[i] = alkiot[i];
+            }
+            alkiot = uusi;
+        }
         this.alkiot[this.lkm] = peluri;
         lkm++;
+        muutettu = true;
     }
     
     
@@ -97,13 +112,103 @@ public class Pelurit {
     
     
     /**
+     * Tallentaa kerhon pelurit tiedostoon
+     * @param tiedNimi tiedoston nimi johon tallennetaan
+     * @throws IOException Jos tiedostoa ei voitu tallentaa
+     * TODO: Testit: Pelurit tallenna testit
+     */
+    public void tallenna(String tiedNimi) throws IOException {
+        if (!muutettu) return;
+        File tiedBak = new File(tiedNimi+".bak");
+        File tied = new File(tiedNimi+".dat");
+        tiedBak.delete();
+        tied.renameTo(tiedBak);
+        
+        try (PrintWriter fo = new PrintWriter(new FileWriter(tied.getCanonicalPath()))) {
+            for (Peluri peluri : this) {
+                fo.println(peluri.toString());
+            }
+        } catch (IOException e) {
+            System.err.println("Pelureita ei voitu tallentaa! "+e.getMessage());
+        }
+    }
+    
+    
+    /**
+     * Lukee kerhon pelurit tiedostosta
+     * @param tiedNimi Tiedosto josta luetaan
+     * TODO: Testit: Pelurit.lueTiedostosta()
+     */
+    public void lueTiedostosta(String tiedNimi) {
+        
+        try (Scanner fi = new Scanner(new FileInputStream(new File(tiedNimi)))){
+            while (fi.hasNextLine()) {
+                lisaa(new Peluri(fi.nextLine()));
+            }
+        } catch (FileNotFoundException e) {
+             System.err.println("Tiedostoa ei voitu lukea! "+e.getMessage());
+        }
+    }
+    
+    
+    /**
+     * Iteraattori Pelurit luokalle
+     * @author Karel
+     * @version 28.11.2021
+     * TODO: Testit: PeluritIterator
+     */
+    public class PeluritIterator implements Iterator<Peluri>{
+
+        private int kohdalla = 0;
+        
+        
+        /**
+         * Onko olemassa vielä seuraavaa jäsentä
+         * @see java.util.Iterator#hasNext()
+         * @return true jos on vielä pelureita
+         */
+        @Override
+        public boolean hasNext() {
+            return kohdalla < getLkm();
+        }
+
+        
+        /**
+         * Annetaan seuraava jäsen
+         * @return seuraava jäsen
+         * @throws NoSuchElementException jos seuraavaa alkiota ei enää ole
+         * @see java.util.Iterator#next()
+         */
+        @Override
+        public Peluri next() throws NoSuchElementException {
+            if (!hasNext()) throw new NoSuchElementException("Ei ole seuraavaa elementtiä");
+            return anna(kohdalla++);
+        }
+        
+    }
+    
+    
+    /**
+     * Palautetaan iteraattori Pelureista
+     */
+    @Override
+    public Iterator<Peluri> iterator() {
+        return new PeluritIterator();
+    }
+    
+    
+    /**
      * 
      * @param args ei käytössä
      */
     public static void main(String[] args) {
-        Pelurit pelurit = new Pelurit();
+        /*Pelurit pelurit = new Pelurit();
         Peluri ben1 = new Peluri();
         Peluri ben2 = new Peluri();
+        Peluri ben3 = new Peluri();
+        Peluri ben4 = new Peluri();
+        Peluri ben5 = new Peluri();
+        Peluri ben6 = new Peluri();
         
         ben1.rekisteroi();
         ben1.taytaTestiTiedoilla();
@@ -111,12 +216,24 @@ public class Pelurit {
         ben2.rekisteroi();
         ben2.taytaTestiTiedoilla();
         
-        try {
-            pelurit.lisaa(ben1);
-            pelurit.lisaa(ben2);
-        } catch (SailoException e) {
-            System.err.println(e.getMessage());
-        }
+        ben3.rekisteroi();
+        ben3.taytaTestiTiedoilla();
+        
+        ben4.rekisteroi();
+        ben4.taytaTestiTiedoilla();
+        
+        ben5.rekisteroi();
+        ben5.taytaTestiTiedoilla();
+        
+        ben6.rekisteroi();
+        ben6.taytaTestiTiedoilla();
+        
+        pelurit.lisaa(ben1);
+        pelurit.lisaa(ben2);
+        pelurit.lisaa(ben3);
+        pelurit.lisaa(ben4);
+        pelurit.lisaa(ben5);
+        pelurit.lisaa(ben6);
         
         System.out.println("================= Jäsenet testi ====================");
         
@@ -125,5 +242,23 @@ public class Pelurit {
             System.out.println("Peluri indeksi: " + i);
             peluri.tulosta(System.out);
         }
+        
+        pelurit.tallenna("kelmit");*/
+        
+        System.out.println("========================Tiedosto testit=================");
+        
+        Pelurit pelurit = new Pelurit();
+        pelurit.lueTiedostosta("peluritest.txt");
+        Peluri ben7 = new Peluri();
+        ben7.rekisteroi();
+        ben7.taytaTestiTiedoilla();
+        pelurit.lisaa(ben7);
+        for (int i = 0; i < pelurit.getLkm(); i++) {
+            Peluri peluri = pelurit.anna(i);
+            System.out.println("Peluri indeksi: " + i);
+            peluri.tulosta(System.out);
+        }
+
+        System.out.println(Integer.toString(Peluri.getSeuraavaId()));
     }
 }

@@ -14,7 +14,7 @@ import Kerho.Peluri;
  * @author Karel Parkkola
  * @version 28.10.2021
  * @version 15.11.2021
- * TODO: Toimivaksi: Oikeilla tiedoilla toimivaksi
+ * FIXME: Toimivaksi: Oikeilla tiedoilla toimivaksi
  */
 public class PeluriLuontiController implements ModalControllerInterface<Peluri> {
     

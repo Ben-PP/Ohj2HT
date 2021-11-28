@@ -3,6 +3,8 @@ package Kerho;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import fi.jyu.mit.ohj2.Mjonot;
+
 import static Kanta.PuhelinTarkistus.*;
 
 /**
@@ -17,7 +19,7 @@ import static Kanta.PuhelinTarkistus.*;
  * @author Karel
  * @version 28.10.2021
  * @version 15.11.2021
- *
+ * @version 28.11.2021
  */
 public class Peluri {
     
@@ -30,7 +32,45 @@ public class Peluri {
     private static int seuraavaId   = 1;
     
     
+    /**
+     * Tyhjä alustus pelurille
+     */
+    public Peluri() {
+        
+    }
     
+    
+    /**
+     * Alustaa pelurin stringillä id|Nimi|P-nimi|T-tila|Puh
+     * @param s stringi
+     */
+    public Peluri(String s) {
+        parse(s);
+    }
+    
+    
+    /**
+     * Parsii pelurin tiedot stringistä id|Nimi|P-nimi|T-tila|Puh
+     * @param s id|Nimi|P-nimi|T-tila|Puh
+     * TODO: Testit: peluri.parse()
+     */
+    private void parse(String s) {
+        StringBuilder sb = new StringBuilder(s);
+        peluriId = Mjonot.erotaInt(sb, 0);
+        sb.deleteCharAt(0);
+        nimi = Mjonot.erota(sb, '|');
+        pelaajaNimi = Mjonot.erota(sb,'|');
+        tallennusTila = Mjonot.erotaInt(sb,0);
+        sb.deleteCharAt(0);
+        puhelin = Mjonot.erota(sb, '|');
+        if (peluriId >= seuraavaId) seuraavaId = peluriId + 1;
+    }
+    
+    // TODO: Poista: getSeuraavaId()
+    @SuppressWarnings("javadoc")
+    public static int getSeuraavaId() {
+        return seuraavaId;
+    }
     
     
     /**
@@ -144,6 +184,15 @@ public class Peluri {
         this.tallennusTila = 1000;
         this.puhelin = arvoPuhelin();
         //this.puhelin = "050 732 8211";
+    }
+    
+    
+    /**
+     * TODO: Testit: Peluri.toString()
+     */
+    @Override
+    public String toString() {
+        return peluriId+"|"+nimi+"|"+pelaajaNimi+"|"+tallennusTila+"|"+puhelin;
     }
     
     

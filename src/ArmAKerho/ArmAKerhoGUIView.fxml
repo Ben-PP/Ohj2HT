@@ -57,7 +57,7 @@
                                     <HBox alignment="CENTER_RIGHT">
                                        <children>
                                           <Label text="Nimi:" />
-                                          <TextField fx:id="nimiTxtField" />
+                                          <TextField fx:id="nimiTxtField" editable="false" />
                                        </children>
                                        <VBox.margin>
                                           <Insets top="10.0" />
@@ -66,7 +66,7 @@
                                     <HBox alignment="CENTER_RIGHT">
                                        <children>
                                           <Label text="P-Nimi:" />
-                                          <TextField fx:id="pNimiTxtField">
+                                          <TextField fx:id="pNimiTxtField" editable="false">
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin></TextField>
@@ -78,7 +78,7 @@
                                     <HBox alignment="CENTER_RIGHT">
                                        <children>
                                           <Label text="T-Tila:" />
-                                          <TextField fx:id="tTilaTxtField" />
+                                          <TextField fx:id="tTilaTxtField" editable="false" />
                                        </children>
                                        <VBox.margin>
                                           <Insets top="10.0" />

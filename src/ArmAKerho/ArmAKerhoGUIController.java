@@ -6,7 +6,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import java.awt.Desktop;
+import java.io.File;
+
 import java.io.IOException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -21,7 +24,6 @@ import fi.jyu.mit.fxgui.ModalController;
 import Kerho.Kerho;
 import Kerho.Paiva;
 import Kerho.Peluri;
-import Kerho.SailoException;
 
 /**
  * Pääikkunan kontrolleri
@@ -29,6 +31,7 @@ import Kerho.SailoException;
  * @author Karel Parkkola
  * @version 15.10.2021
  * @version 15.11.2021
+ * @version 28.11.2021
  */
 public class ArmAKerhoGUIController implements Initializable {
     
@@ -51,7 +54,7 @@ public class ArmAKerhoGUIController implements Initializable {
     @FXML private Label sunnuntaiLabel;
     
     //Kerhon nimi. Oletus on valmiiksi kirjoitettuna kenttään.
-    private String kerhonnimi = "ArmA Kerho";
+    private String kerhonnimi = "Anna kerhon nimi!";
     
     
     @Override
@@ -85,6 +88,7 @@ public class ArmAKerhoGUIController implements Initializable {
      */
     @FXML
     private void handleUusiPeluri() {
+        //FIXME: Pelurin luonti
         //avaa pelurin luonti-ikkunan
         Peluri peluri = ModalController.showModal(ArmAKerhoGUIController.class.getResource("PeluriLuontiGUIView.fxml"), "Peluri", null, null);
         
@@ -137,7 +141,7 @@ public class ArmAKerhoGUIController implements Initializable {
             System.out.println();
         }
         //taas toiminnallista================================
-        
+        if (ajat[0][0] == null) return;
         muokkaaAikoja(ajat);
     }
     
@@ -220,6 +224,8 @@ public class ArmAKerhoGUIController implements Initializable {
         
         chooserPelurit.clear();
         chooserPelurit.addSelectionListener(e -> naytaPeluri());
+        File kerhot = new File("kerhot");
+        if(!kerhot.exists()) kerhot.mkdir();
     }
     
     /**
@@ -228,13 +234,8 @@ public class ArmAKerhoGUIController implements Initializable {
      * TODO: Testit: Pelurin lisääminen kerhoon
      */
     private void lisaaPeluri(Peluri peluri) {
-        try {
             kerho.lisaa(peluri);
             hae(peluri.getPeluriId());
-        } catch (SailoException e) {
-            Dialogs.showMessageDialog("Ongelmia uuden pelurin luomisessa " + e.getMessage());
-            return;
-        }
     }
     
     
@@ -267,7 +268,9 @@ public class ArmAKerhoGUIController implements Initializable {
             //Jos jokin päivän kellonajoista on tyhjä, ei kyseinen päivä käy.
             if(p.getAlkuAika(false) == null || p.getAlkuAika(true) == null || p.getLoppuAika(false) == null || p.getLoppuAika(true) == null) {
                 paivatLabels.get(i).setText("Ei käy!");
-            } else {
+            } else if (p.getAlkuAika(false).equals("00") && p.getAlkuAika(true).equals("00") && p.getLoppuAika(false).equals("00") && p.getLoppuAika(true).equals("00")) {
+                paivatLabels.get(i).setText("Ei käy!");
+            }else {
                 paivatLabels.get(i).setText(p.getAlkuAika(false)+":"+p.getAlkuAika(true)+" - "+p.getLoppuAika(false)+":"+p.getLoppuAika(true));
             }
         }
@@ -289,11 +292,35 @@ public class ArmAKerhoGUIController implements Initializable {
      * TODO: Testit: Tiedostosta lukeminen
      */
     protected void lueTiedosto(String nimi) {
+        
+        kerho.lueTiedostosta("kerhot/"+nimi+"/nimet.dat", "kerhot/"+nimi+"/pelipaivat.dat");
+        hae(1);
         kerhonnimi = nimi;
         setTitle("Kerho - " + kerhonnimi);
-        String virhe = "Ei osata lukea vielä";  // TODO: Toimivaksi: Tiedostosta lukeminen
-        // if (virhe != null) 
-            Dialogs.showMessageDialog(virhe);
+    }
+    
+    
+    /**
+     * Luo uuden kerhon kansiorakenteen
+     * @param nimi kerhon nimi
+     * TODO: Testit: Kansiorakenteen luominen
+     */
+    private void luoTiedostot(String nimi) {
+        File paa = new File("kerhot/"+nimi);
+        paa.mkdir();
+        File pelurit = new File("kerhot/"+nimi+"/nimet.dat");
+        File peluritBak = new File("kerhot/"+nimi+"/nimet.bak");
+        File pelipaivat = new File("kerhot/"+nimi+"/pelipaivat.dat");
+        File pelipaivatBak = new File("kerhot/"+nimi+"/pelipaivat.bak");
+        try {
+            pelurit.createNewFile();
+            peluritBak.createNewFile();
+            pelipaivat.createNewFile();
+            pelipaivatBak.createNewFile();
+        } catch (IOException e) {
+            System.err.println("Tiedostoja ei voitu luoda. "+e.getMessage());
+        }
+        
     }
     
     
@@ -303,7 +330,7 @@ public class ArmAKerhoGUIController implements Initializable {
      */
     private void tallenna() {
      // TODO: Toimivaksi: Tiedostoon tallentaminen
-     Dialogs.showMessageDialog("Vielä ei osata tallentaa");
+        kerho.tallenna("kerhot/"+kerhonnimi+"/nimet", "kerhot/"+kerhonnimi+"/pelipaivat");
     }
 
     
@@ -314,9 +341,28 @@ public class ArmAKerhoGUIController implements Initializable {
      */
     public boolean avaa() {
         // TODO: Toimivaksi: Kerhon valitseminen nimen pohjalta ensimmäiseksi
-        String uusinimi = KerhonNimiController.kysyNimi(null, kerhonnimi);
-        if (uusinimi == null) return false;
+        boolean valmis = false;
+        String uusinimi = "";
+        do {
+            uusinimi = KerhonNimiController.kysyNimi(null, kerhonnimi);
+            if (uusinimi == null) return false;
+            if (uusinimi.equals("") || uusinimi.equals("Anna kerhon nimi!")) {
+                Dialogs.showMessageDialog("Anna kerhon nimi!");
+                continue;
+            }
+            
+            File tied = new File("kerhot/"+uusinimi);
+            
+            if (!tied.exists()) {
+                if (Dialogs.showQuestionDialog("Luodaanko uusi kerho", "Kerhoa "+uusinimi+" ei ole olemassa.\nTahdotko luoda uuden kerhon?", "Kyllä", "Ei")) {
+                    luoTiedostot(uusinimi);
+                }else continue;
+            }
+            valmis = true;
+        } while (!valmis);
+        
         lueTiedosto(uusinimi);
+        kerhonnimi = uusinimi;
         return true;
     }
     

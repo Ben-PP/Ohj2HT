@@ -3,6 +3,8 @@ package Kerho;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import fi.jyu.mit.ohj2.Mjonot;
+
 /**
  * Luokka päiville
  * - Tietää Paivan kentät
@@ -15,6 +17,7 @@ import java.io.PrintStream;
  * @version 5.11.2021
  * @version 9.11.2021
  * @version 15.11.2021
+ * @version 28.11.2021
  * TODO: Toimivaksi: Oikeellisuustarkistus
  * TODO: Toimivaksi: Merkkijonojen lukeminen ja kirjoittaminen. Paiva-luokka
  */
@@ -29,14 +32,23 @@ public class Paiva {
     
     //0=maanantai -> 6=sunnuntai
     //TODO: Tarvitaanko? int viikonPaiva Paiva-luokassa
-    private int viikonPaiva;
+    private static final String[] paivat = {"Maanantai", "Tiistai", "Keskiviikko", "Torstai", "Perjantai", "Lauantai", "Sunnuntai"};
     
     
     /**
      * alustetaan päivä
      */
     public Paiva() {
-        //
+        
+    }
+    
+    
+    /**
+     * Alustaa paivan stringillä id|paiva|alkuAikaH|AlkuAikaM|LoppuAikaH|LoppuAikaM
+     * @param s id|paiva|alkuAikaH|AlkuAikaM|LoppuAikaH|LoppuAikaM
+     */
+    public Paiva(String s) {
+        parse(s);
     }
     
     
@@ -50,7 +62,7 @@ public class Paiva {
      * @param pv sdf
      */
     public Paiva(int Id, String alkuAH, String alkuAM, String loppuAH, String loppuAM, int pv) {
-        viikonPaiva = pv;
+        paiva = paivat[pv];
         alkuAikaH = alkuAH;
         alkuAikaM = alkuAM;
         loppuAikaH = loppuAH;
@@ -62,10 +74,31 @@ public class Paiva {
     /**
      * Alustetaan tietyn pelurin päivä
      * @param peluriId pelurin viitenumero
-     * TODO: Tarvitaanko? Paivan alustus pelkällä pelurin id:llä
+     * @param pv mistä indeksistä paiva otetaan 0=maanantai 6=sunnuntai
      */
-    public Paiva(int peluriId) {
+    public Paiva(int peluriId, int pv) {
         this.peluriId = peluriId;
+        this.paiva = paivat[pv];
+        this.alkuAikaH = "00";
+        this.alkuAikaM = "00";
+        this.loppuAikaH = "00";
+        this.loppuAikaM = "00";
+    }
+    
+    
+    /**
+     * Parsii paivan tiedot stringistä id|paiva|alkuAikaH|AlkuAikaM|LoppuAikaH|LoppuAikaM
+     * @param s id|paiva|alkuAikaH|AlkuAikaM|LoppuAikaH|LoppuAikaM
+     */
+    private void parse(String s) {
+        StringBuilder sb = new StringBuilder(s);
+        peluriId = Mjonot.erotaInt(sb, 0);
+        sb.deleteCharAt(0);
+        paiva = Mjonot.erota(sb, '|');
+        alkuAikaH = Mjonot.erota(sb, '|');
+        alkuAikaM = Mjonot.erota(sb, '|');
+        loppuAikaH = Mjonot.erota(sb, '|');
+        loppuAikaM = Mjonot.erota(sb, '|');
     }
     
     
@@ -168,6 +201,16 @@ public class Paiva {
      */
     public void setPeluriId(int id) {
         peluriId = id;
+    }
+    
+    
+    /**
+     * Palauttaa paiva stringinä
+     * TODO: Testit: Paiva.toString()
+     */
+    @Override
+    public String toString() {
+        return peluriId+"|"+paiva+"|"+alkuAikaH+"|"+alkuAikaM+"|"+loppuAikaH+"|"+loppuAikaM;
     }
     
     

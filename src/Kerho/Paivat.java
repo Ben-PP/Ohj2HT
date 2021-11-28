@@ -1,6 +1,13 @@
 package Kerho;
 
 import java.util.List;
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -13,7 +20,7 @@ import java.util.Collection;
  * @author Karel
  * @version 5.11.2021
  * @version 15.11.2021
- *
+ * @version 28.11.2021
  */
 public class Paivat {
     
@@ -21,6 +28,51 @@ public class Paivat {
      * Lista päivistä jota luokka ylläpitää
      */
     private Collection<Paiva> alkiot = new ArrayList<Paiva>();
+    private boolean muutettu = false;
+    
+    
+    /**
+     * Tallentaa päivät
+     * @param tiedNimi Tiedoston nimi johon tallennetaan
+     * @throws IOException jos tiedostoa ei voitu tallentaa
+     * TODO: Testit: Paivat.tallenna()
+     */
+    public void tallenna(String tiedNimi) throws IOException {
+        if (!muutettu) return;
+        //Varmuuskopioi vanhan tiedoston ennen uuden tallentamista
+        File tiedBak = new File(tiedNimi+".bak");
+        File tied = new File(tiedNimi+".dat");
+        tiedBak.delete();
+        tied.renameTo(tiedBak);
+        
+        //Kirjoittaa uuden tiedoston
+        try (PrintWriter fo = new PrintWriter(new FileWriter(tied.getCanonicalPath()))){
+            for (Paiva paiva : alkiot) {
+                fo.println(paiva.toString());
+            }
+        } catch (IOException e) {
+            System.err.println("Päiviä ei voitu tallentaa! "+ e.getMessage());
+        }
+    }
+    
+    
+    /**
+     * Lukee paivat tiedostosta
+     * @param tiedNimi tiedostopolku josta luetaan
+     */
+    public void lueTiedostosta(String tiedNimi) {
+
+        try (Scanner fi = new Scanner(new FileInputStream(new File(tiedNimi)))){
+            while (fi.hasNextLine()) {
+                lisaa(new Paiva(fi.nextLine()));
+            }
+        } catch (FileNotFoundException e) {
+
+             System.err.println("Tiedostoa ei voitu lukea! "+e.getMessage());
+        }
+        
+
+    }
     
     
     /**
@@ -29,6 +81,7 @@ public class Paivat {
      */
     public void lisaa(Paiva paiv) {
         alkiot.add(paiv);
+        muutettu = true;
     }
     
     
