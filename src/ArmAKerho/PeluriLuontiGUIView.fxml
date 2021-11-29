@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ArmAKerho.PeluriLuontiController">
    <bottom>
@@ -26,8 +27,8 @@
          <children>
             <HBox alignment="CENTER_RIGHT">
                <children>
-                  <Label text="Nimi:" />
-                  <TextField fx:id="nimi" promptText="Henkilön nimi">
+                  <Label text="*Nimi:" />
+                  <TextField fx:id="nimiTextField" promptText="Henkilön nimi">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -36,8 +37,8 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT">
                <children>
-                  <Label text="P-Nimi:" />
-                  <TextField promptText="Pelinimi">
+                  <Label text="*P-Nimi:" />
+                  <TextField fx:id="pelaajaNimiTextField" promptText="Pelinimi">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -47,7 +48,17 @@
             <HBox alignment="CENTER_RIGHT">
                <children>
                   <Label text="T-Tila" />
-                  <TextField promptText="Varattu tallennustila (GB)">
+                  <TextField fx:id="tallennusTilaTextField" promptText="Varattu tallennustila (GB)">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT">
+               <children>
+                  <Label text="Puh:" />
+                  <TextField fx:id="puhNumTextField" promptText="Puhelin">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -65,4 +76,19 @@
          </BorderPane.margin>
       </VBox>
    </left>
+   <top>
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Anna uuden pelurin tiedot">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label text="Tähdellä * merkityt kentän ovat pakollisia" />
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="2.0" left="4.0" right="4.0" top="2.0" />
+         </BorderPane.margin>
+      </VBox>
+   </top>
 </BorderPane>

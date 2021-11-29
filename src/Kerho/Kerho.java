@@ -15,6 +15,7 @@ import java.util.List;
  * @version 5.11.2021
  * @version 15.11.2021
  * @version 28.11.2021
+ * @version 29.11.2021
  */
 public class Kerho {
     
@@ -87,6 +88,17 @@ public class Kerho {
      */
     public void poistaPelurinPaivat(int peluriId) {
         paivat.poistaPelurinPaivat(peluriId);
+    }
+    
+    
+    /**
+     * Muokkaa pelurin tiedot
+     * @param peluriId peluri kenen tiedot muokataan
+     * @param tiedot taulukko tiedoista [nimi,pnimi,ttila,puh]
+     * TODO: Testit: Kerho.muokkaaTietoja()
+     */
+    public void muokkaaTietoja(int peluriId, String[] tiedot) {
+        pelurit.muokkaaTietoja(peluriId, tiedot);
     }
     
     

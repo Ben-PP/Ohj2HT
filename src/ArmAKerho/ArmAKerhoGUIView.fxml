@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ArmAKerho.ArmAKerhoGUIController">
+<BorderPane prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ArmAKerho.ArmAKerhoGUIController">
    <center>
       <SplitPane dividerPositions="0.29797979797979796" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
@@ -37,7 +37,7 @@
                               <Font name="System Bold Italic" size="16.0" />
                            </font>
                         </Label>
-                        <ListChooser fx:id="chooserPelurit" prefHeight="325.0" />
+                        <ListChooser fx:id="chooserPelurit" prefHeight="378.0" prefWidth="175.0" />
                      </children>
                   </VBox>
                </children>
@@ -79,6 +79,15 @@
                                        <children>
                                           <Label text="T-Tila:" />
                                           <TextField fx:id="tTilaTxtField" editable="false" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT">
+                                       <children>
+                                          <Label text="Puh:" />
+                                          <TextField fx:id="puhNumtxtField" editable="false" />
                                        </children>
                                        <VBox.margin>
                                           <Insets top="10.0" />

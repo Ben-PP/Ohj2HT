@@ -1,85 +1,89 @@
 package ArmAKerho;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import Kanta.RegularExpression;
 import Kerho.Peluri;
 
+
 /**
- * Kontrolleri pelureiden luonti-ikkunalle
- * 
- * @author Karel Parkkola
- * @version 28.10.2021
- * @version 15.11.2021
+ * Käsittelee Pelurin tietojen muokkausikkunan tapahtumat
+ * @author Karel
  * @version 29.11.2021
+ *
  */
-public class PeluriLuontiController implements ModalControllerInterface<Peluri> {
+public class PeluriMuokkausController implements ModalControllerInterface<String[]> {
     
-    //Ikkunan sulkemista varten
-    @FXML private TextField nimiTextField;
-    @FXML private TextField pelaajaNimiTextField;
-    @FXML private TextField tallennusTilaTextField;
-    @FXML private TextField puhNumTextField;
+    @FXML TextField nimiTextField;
+    @FXML TextField pelaajaNimiTextField;
+    @FXML TextField tallennusTilaTextField;
+    @FXML TextField puhNumTextField;
     
 
-    
     @Override
-    public Peluri getResult() {
-        return peluri;
+    public String[] getResult() {
+        return muutetut;
     }
     
-    
-    
+
     @Override
     public void handleShown() {
-        //
+        // TODO Auto-generated method stub
+        
     }
     
-    
-    
+
     @Override
-    public void setDefault(Peluri oletus) {
+    public void setDefault(String[] oletus) {
         //
     }
     
     
     /**
-     * Hoitaa pelaajien lisäyksen
+     * Kun ok nappia painetaan
      */
     @FXML
-    public void handleLisaa() {
-        if (!tarkasta()) return;
-        uusiPeluri();
+    public void handleOk() {
+        if(!tarkasta()) return;
+        keraaTiedot();
         ModalController.closeStage(nimiTextField);
     }
     
     
     /**
-     * Sulkee ikkunan ja eikä tallenna pelurin tietoja
+     * Kun peruuta nappia painetaan
      */
     @FXML
-    public void handlePeruuta() {
+    public void handleCancel() {
         ModalController.closeStage(nimiTextField);
     }
     
+    //===================================================================================
+    //=====================Ei FXML=======================================================
+    //===================================================================================
     
-    //------------------------------------------------------------------
-    // Koodin sisäiset asiat--------------------------------------------
-    //------------------------------------------------------------------
+    
+    private String[] muutetut = new String[4];
+    
     
     /**
-     * Peluri joka luodaan ja lopuksi palautetaan
+     * kerää tiedot textFieldeistä taulukkoon
+     * TODO: Testit: MuokkausController.keraaTiedot()
      */
-    private Peluri peluri;
+    private void keraaTiedot() {
+        muutetut[0] = nimiTextField.getText();
+        muutetut[1] = pelaajaNimiTextField.getText();
+        muutetut[2] = tallennusTilaTextField.getText();
+        muutetut[3] = puhNumTextField.getText();
+    }
     
     
     /**
      * Tarkastaa kenttien oikeellisuuden
      * @return true jos kentät ovat kunnossa, false jos ei
-     * TODO: Testit: LuontiController.Tarkasta()
+     * TODO: Testit: MuokkausController.tarkasta()
      */
     private boolean tarkasta() {
         boolean ok = true;
@@ -125,11 +129,15 @@ public class PeluriLuontiController implements ModalControllerInterface<Peluri> 
     
     
     /**
-     * Tehdään uusi peluri joka voidaan lisätä kerhoon
-     * TODO: Testit: Pelurin luominen
+     * Alustaa ikkunan
+     * @param peluri peluri jolta tiedot otetaan
+     * TODO: Testit: MuokkausController.alusta()
      */
-    private void uusiPeluri() {
-        peluri = new Peluri(nimiTextField.getText(), pelaajaNimiTextField.getText(), tallennusTilaTextField.getText(), puhNumTextField.getText());
-        peluri.rekisteroi();
-        }
+    public void alusta(Peluri peluri) {
+        nimiTextField.setText(peluri.getNimi());
+        pelaajaNimiTextField.setText(peluri.getPNimi());
+        tallennusTilaTextField.setText(Integer.toString(peluri.getTTila()));
+        puhNumTextField.setText(peluri.getPuh());
+    }
+
 }

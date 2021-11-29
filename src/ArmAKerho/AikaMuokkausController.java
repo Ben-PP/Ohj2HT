@@ -2,14 +2,16 @@ package ArmAKerho;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+
 import Kerho.Paiva;
+
+import Kanta.RegularExpression;
+
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 
@@ -20,6 +22,7 @@ import fi.jyu.mit.fxgui.ModalControllerInterface;
  * @version 9.11.2021
  * @version 15.11.2021
  * @version 28.11.2021
+ * @version 29.11.2021
  */
 public class AikaMuokkausController implements ModalControllerInterface<String[][]> {
     
@@ -244,23 +247,23 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
                 String txt = txtField.getText();
                 
                 //Selvittää onko kyseessä tunti vai minuutti
-                if (regulaariExp("H", txtField.getId())) {
+                if (RegularExpression.regulaariExp("H", txtField.getId(), true)) {
                     p = "^0[0-9]$|^1[0-9]$|^2[0-4]$";
                     if (i == 1) alkuAikaH = Integer.parseInt(txtField.getText().toString());
                     if (i == 3) loppuAikaH = Integer.parseInt(txtField.getText().toString());
                 } else {
-                    p = "^[0-5][0-9]$|^60$";
+                    p = "^[0-5][0-9]$";
                     if (i == 2) alkuAikaM = Integer.parseInt(txtField.getText().toString());
                     if (i == 4) loppuAikaM = Integer.parseInt(txtField.getText().toString());
                 }
                 
                 //Tutkii onko annettu kellonaika laillinen
-                if (regulaariExp(p, txt)) {
+                if (RegularExpression.regulaariExp(p, txt, true)) {
                     txtField.setStyle(null);
                     System.out.println("Match");
-                } else if (regulaariExp("^0$|^...*$", txt)) {
+                } else if (RegularExpression.regulaariExp("^0$", txt, true)) {
                     txtField.setText("00");
-                } else if (regulaariExp("^[1-9]$", txt)) {
+                } else if (RegularExpression.regulaariExp("^[1-9]$", txt, true)) {
                     txtField.setText(0+txt);
                 } else {
                     ok = false;
@@ -286,21 +289,6 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
         
         if(ok && ok2) return true;
         return false;
-    }
-    
-    
-    /**
-     * Regular expression helpottamaan elämää
-     * @param regex kaava
-     * @param tutkittava stringi jota tutkitaan
-     * @return true jos stringi vastaa regular expressionia, muuten false
-     * TODO: Siirrä: Kanta-pakettiin?
-     */
-    private boolean regulaariExp(String regex, String tutkittava) {
-        Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        Matcher m = p.matcher(tutkittava);
-        
-        return m.find();
     }
     
     

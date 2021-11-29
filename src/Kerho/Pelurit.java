@@ -78,6 +78,23 @@ public class Pelurit implements Iterable<Peluri> {
     
     
     /**
+     * Muokkaa pelurin tiedot
+     * @param peluriId peluri jonka tietoja muokataan
+     * @param tiedot taulukko tiedoista [nimi,pnimi,ttila,puh]
+     * TODO: Testit: Pelurit.muokkaaTietoja()
+     */
+    public void muokkaaTietoja(int peluriId, String[] tiedot) {
+        for (int i = 0; i < lkm; i++) {
+            if(alkiot[i].getPeluriId() == peluriId) {
+                alkiot[i].muokkaaTietoja(tiedot);
+                muutettu = true;
+                return;
+            }
+        }
+    }
+    
+    
+    /**
      * Palauttaa pelurin
      * @param i paikka josta peluri palautetaan
      * @return peluri

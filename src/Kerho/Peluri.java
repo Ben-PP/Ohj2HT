@@ -20,6 +20,8 @@ import static Kanta.PuhelinTarkistus.*;
  * @version 28.10.2021
  * @version 15.11.2021
  * @version 28.11.2021
+ * @version 29.11.2021
+ * FIXME: Testit: Peluri-luokka
  */
 public class Peluri {
     
@@ -37,6 +39,21 @@ public class Peluri {
      */
     public Peluri() {
         
+    }
+    
+    
+    /**
+     * Alustaa pelurin täydellisesti
+     * @param nimi Pelurin nimi
+     * @param pNimi Pelurin pelinimi
+     * @param tTila Pelurin käytössä oleva tallennustila
+     * @param puh Pelurin puhelinnumero
+     */
+    public Peluri(String nimi, String pNimi, String tTila, String puh) {
+        this.nimi = nimi;
+        this.pelaajaNimi = pNimi;
+        if(!tTila.equals("")) this.tallennusTila = Integer.parseInt(tTila);
+        if(!puh.equals("")) this.puhelin = puh;
     }
     
     
@@ -60,8 +77,7 @@ public class Peluri {
         sb.deleteCharAt(0);
         nimi = Mjonot.erota(sb, '|');
         pelaajaNimi = Mjonot.erota(sb,'|');
-        tallennusTila = Mjonot.erotaInt(sb,0);
-        sb.deleteCharAt(0);
+        setTallennusTila(Mjonot.erota(sb,'|'));
         puhelin = Mjonot.erota(sb, '|');
         if (peluriId >= seuraavaId) seuraavaId = peluriId + 1;
     }
@@ -114,6 +130,19 @@ public class Peluri {
         this.peluriId = seuraavaId;
         seuraavaId++;
         return this.peluriId;
+    }
+    
+    
+    /**
+     * Muokkaa pelurin tiedot
+     * @param tiedot taulukko tiedoista [nimi,pnimi,ttila,puh]
+     * TODO: Testit: Peluri.muokkaaTietoja()
+     */
+    public void muokkaaTietoja(String[] tiedot) {
+        this.nimi = tiedot[0];
+        this.pelaajaNimi = tiedot[1];
+        setTallennusTila(tiedot[2]);
+        this.puhelin = tiedot[3];
     }
     
     
@@ -172,6 +201,30 @@ public class Peluri {
      */
     public int getTTila() {
         return this.tallennusTila;
+    }
+    
+    
+    /**
+     * Palauttaa pelurin puhelinnumeron
+     * @return puhelinnumero
+     * TODO: Testit: Peluri.getPuh()
+     */
+    public String getPuh() {
+        return this.puhelin;
+    }
+    
+    
+    /**
+     * Asettaa tallennustilan stringistä
+     * @param s tallennustila stringinä
+     * TODO: Testit: Peluri.setTallennusTila()
+     */
+    private void setTallennusTila(String s) {
+        if(s.equals("")) {
+            this.tallennusTila = 0;
+        } else {
+            this.tallennusTila = Integer.parseInt(s);
+        }
     }
     
     

@@ -9,12 +9,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.jyu.mit.fxgui.ModalController">
+<BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ArmAKerho.PeluriMuokkausController">
    <bottom>
       <HBox alignment="CENTER_RIGHT" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#handleDefaultCancel" text="Peruuta" />
-            <Button mnemonicParsing="false" onAction="#handleDefaultOK" text="OK" />
+            <Button mnemonicParsing="false" onAction="#handleCancel" text="Peruuta" />
+            <Button mnemonicParsing="false" onAction="#handleOk" text="OK" />
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" right="10.0" />
@@ -27,7 +27,7 @@
             <HBox alignment="CENTER_RIGHT">
                <children>
                   <Label text="Nimi:" />
-                  <TextField promptText="Henkilön nimi">
+                  <TextField fx:id="nimiTextField" promptText="Henkilön nimi">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -37,7 +37,7 @@
             <HBox alignment="CENTER_RIGHT">
                <children>
                   <Label text="P-Nimi:" />
-                  <TextField promptText="Pelinimi">
+                  <TextField fx:id="pelaajaNimiTextField" promptText="Pelinimi">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -47,7 +47,17 @@
             <HBox alignment="CENTER_RIGHT">
                <children>
                   <Label text="T-Tila" />
-                  <TextField promptText="Varattu tallennustila (GB)">
+                  <TextField fx:id="tallennusTilaTextField" promptText="Varattu tallennustila (GB)">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT">
+               <children>
+                  <Label text="Puh" />
+                  <TextField fx:id="puhNumTextField" promptText="Puhelin">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>

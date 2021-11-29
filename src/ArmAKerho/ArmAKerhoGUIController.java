@@ -32,6 +32,7 @@ import Kerho.Peluri;
  * @version 15.10.2021
  * @version 15.11.2021
  * @version 28.11.2021
+ * @version 29.11.2021
  */
 public class ArmAKerhoGUIController implements Initializable {
     
@@ -45,6 +46,7 @@ public class ArmAKerhoGUIController implements Initializable {
     @FXML private TextField nimiTxtField;
     @FXML private TextField pNimiTxtField;
     @FXML private TextField tTilaTxtField;
+    @FXML private TextField puhNumtxtField;
     @FXML private Label maanantaiLabel;
     @FXML private Label tiistaiLabel;
     @FXML private Label keskiviikkoLabel;
@@ -77,7 +79,7 @@ public class ArmAKerhoGUIController implements Initializable {
      */
     @FXML
     private void handleTulosta() {
-        //TODO: Toimivaksi: Tulostaminen FXML
+        //FIXME: Tulostaminen
         TulostusController.tulosta(null);
     } 
 
@@ -88,7 +90,6 @@ public class ArmAKerhoGUIController implements Initializable {
      */
     @FXML
     private void handleUusiPeluri() {
-        //FIXME: Pelurin luonti
         //avaa pelurin luonti-ikkunan
         Peluri peluri = ModalController.showModal(ArmAKerhoGUIController.class.getResource("PeluriLuontiGUIView.fxml"), "Peluri", null, null);
         
@@ -102,8 +103,11 @@ public class ArmAKerhoGUIController implements Initializable {
      */
     @FXML
     private void handleMuokkaaPeluria() {
-        //TODO: Toimivaksi: Pelurin muokkaus FXML
-        ModalController.showModal(ArmAKerhoGUIController.class.getResource("PeluriDialogView.fxml"), "Peluri", null, "");
+        if(peluriKohdalla == null) return;
+        
+        String[] muokatut = new String[4];
+        muokatut = ModalController.<String[],PeluriMuokkausController>showModal(PeluriMuokkausController.class.getResource("PeluriDialogView.fxml"), "Tiedot", null, muokatut,ctrl->ctrl.alusta(peluriKohdalla));
+        muokkaaTietoja(muokatut);
     }
     
     
@@ -251,6 +255,7 @@ public class ArmAKerhoGUIController implements Initializable {
         nimiTxtField.setText(peluriKohdalla.getNimi());
         pNimiTxtField.setText(peluriKohdalla.getPNimi());
         tTilaTxtField.setText(Integer.toString(peluriKohdalla.getTTila()));
+        puhNumtxtField.setText(peluriKohdalla.getPuh());
         
         //Lisätään pelurin peliajat oikeille paikoille.
         
@@ -422,6 +427,17 @@ public class ArmAKerhoGUIController implements Initializable {
             Paiva pv = new Paiva(peluriKohdalla.getPeluriId(), aikaTaulukko[i][0], aikaTaulukko[i][1], aikaTaulukko[i][2], aikaTaulukko[i][3], i);
             kerho.lisaa(pv);
         }
+        hae(peluriKohdalla.getPeluriId());
+    }
+    
+    
+    /**
+     * Muokkaa pelurin tiedot
+     * @param tiedot taulukko tiedoista [nimi, pnimi, ttila, puh]
+     * TODO: Testit: Controller.muokkaaTietoja()
+     */
+    private void muokkaaTietoja(String[] tiedot) {
+        kerho.muokkaaTietoja(peluriKohdalla.getPeluriId(), tiedot);
         hae(peluriKohdalla.getPeluriId());
     }
 }
