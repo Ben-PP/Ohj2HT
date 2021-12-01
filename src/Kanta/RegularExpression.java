@@ -18,7 +18,15 @@ public class RegularExpression {
      * @param tutkittava stringi jota tutkitaan
      * @param caseInSensitive True jos halutaan että isoja ja pieniä ei huomioida, false jos koolla on väliä
      * @return true jos stringi vastaa regular expressionia, muuten false
-     * FIXME: Testit: Kanta.RegularExpression.regulaariExp()
+     * @example
+     * <pre name="test">
+     *  regulaariExp("[k]", "Karel", false) === false;
+     *  regulaariExp("[k]", "Karel", true) === true;
+     *  regulaariExp("[K]", "Karel", false) === true;
+     *  regulaariExp("[0-9]", "Karel", true) === false;
+     *  regulaariExp("[^0-9]", "Karel", true) === true;
+     *  regulaariExp("[0-9]", "Karel1", false) === true;
+     * </pre>
      */
     public static boolean regulaariExp(String regex, String tutkittava, boolean caseInSensitive) {
         Pattern p;

@@ -21,7 +21,7 @@ import static Kanta.PuhelinTarkistus.*;
  * @version 15.11.2021
  * @version 28.11.2021
  * @version 29.11.2021
- * FIXME: Testit: Peluri-luokka
+ * @version 30.11.2021
  */
 public class Peluri {
     
@@ -48,18 +48,48 @@ public class Peluri {
      * @param pNimi Pelurin pelinimi
      * @param tTila Pelurin käytössä oleva tallennustila
      * @param puh Pelurin puhelinnumero
+     * @example
+     * <pre name="test">
+     *  Peluri ben1 = new Peluri("Ben Peluri", "Ben_P", "1000", "0501231234");
+     *  ben1.rekisteroi();
+     *  int n1 = ben1.getPeluriId();
+     *  ben1.toString() === n1+"|Ben Peluri|Ben_P|1000|0501231234";
+     *  
+     *  Peluri ben2 = new Peluri("Ben Pelaaja", "Ben!P2", "", "");
+     *  ben2.rekisteroi();
+     *  int n2 = ben2.getPeluriId();
+     *  ben2.toString() === n2+"|Ben Pelaaja|Ben!P2|0|";
+     * </pre>
      */
     public Peluri(String nimi, String pNimi, String tTila, String puh) {
         this.nimi = nimi;
         this.pelaajaNimi = pNimi;
-        if(!tTila.equals("")) this.tallennusTila = Integer.parseInt(tTila);
-        if(!puh.equals("")) this.puhelin = puh;
+        setTallennusTila(tTila);
+        this.puhelin = puh;
     }
     
     
     /**
      * Alustaa pelurin stringillä id|Nimi|P-nimi|T-tila|Puh
      * @param s stringi
+     * @example
+     * <pre name="test">
+     *  Peluri ben1 = new Peluri("1|Ben Peluri|Ben_P|1000|0501231234");
+     *  ben1.toString() === "1|Ben Peluri|Ben_P|1000|0501231234";
+     *  
+     *  Peluri ben2 = new Peluri("5|Ben Pelaaja|Ben!P2|0|");
+     *  ben2.toString() === "5|Ben Pelaaja|Ben!P2|0|";
+     *  
+     *  Peluri ben3 = new Peluri("3|Ben Pelaaja|Ben!P2|0|");
+     *  ben3.toString() === "3|Ben Pelaaja|Ben!P2|0|";
+     *  
+     *  Peluri ben4 = new Peluri();
+     *  ben4.rekisteroi();
+     *  
+     *  int n1 = ben2.getPeluriId();
+     *  int n2 = ben4.getPeluriId();
+     *  n2 === n1+1;
+     * </pre>
      */
     public Peluri(String s) {
         parse(s);
@@ -68,8 +98,8 @@ public class Peluri {
     
     /**
      * Parsii pelurin tiedot stringistä id|Nimi|P-nimi|T-tila|Puh
+     * Testattu Peluri(String s) konstruktorissa
      * @param s id|Nimi|P-nimi|T-tila|Puh
-     * TODO: Testit: peluri.parse()
      */
     private void parse(String s) {
         StringBuilder sb = new StringBuilder(s);
@@ -82,16 +112,11 @@ public class Peluri {
         if (peluriId >= seuraavaId) seuraavaId = peluriId + 1;
     }
     
-    // TODO: Poista: getSeuraavaId()
-    @SuppressWarnings("javadoc")
-    public static int getSeuraavaId() {
-        return seuraavaId;
-    }
-    
     
     /**
      * Tulostaa jäsenen tiedot
      * @param out Tietovirta johon tiedot tulostetaan
+     * TODO: Toimivaksi: Peluri.tulosta()
      */
     public void tulosta(PrintStream out) {
         out.println(String.format("%03d", peluriId) + " " + nimi + " " + "\""+ pelaajaNimi +"\"");
@@ -136,7 +161,15 @@ public class Peluri {
     /**
      * Muokkaa pelurin tiedot
      * @param tiedot taulukko tiedoista [nimi,pnimi,ttila,puh]
-     * TODO: Testit: Peluri.muokkaaTietoja()
+     * @example
+     * <pre name="test">
+     *  Peluri ben1 = new Peluri("1|Ben Peluri|Ben_P|1000|0501231234");
+     *  ben1.toString() === "1|Ben Peluri|Ben_P|1000|0501231234";
+     *  
+     *  String[] tiedot = {"Ben Pelurimuutettu", "Ben_Muutettu", "1200", "0506664444"};
+     *  ben1.muokkaaTietoja(tiedot);
+     *  ben1.toString() === "1|Ben Pelurimuutettu|Ben_Muutettu|1200|0506664444";
+     * </pre>
      */
     public void muokkaaTietoja(String[] tiedot) {
         this.nimi = tiedot[0];
@@ -168,6 +201,8 @@ public class Peluri {
     /**
      * Palauttaa pelurin nimen
      * @return pelurin nimi
+     * Peluri ben1 = new Peluri("1|Ben Peluri|Ben_P|1000|0501231234");
+     * ben1.getNimi() === "Ben Peluri";
      */
     public String getNimi() {
         return this.nimi;
@@ -179,8 +214,7 @@ public class Peluri {
      * @return Pelurin pelaajanimi
      * @example
      * <pre name="test">
-     *  Peluri ben1 = new Peluri();
-     *  ben1.taytaTestiTiedoilla();
+     *  Peluri ben1 = new Peluri("1|Ben Peluri|Ben_P|1000|0501231234");
      *  ben1.getPNimi() === "Ben_P"
      * </pre>
      */
@@ -194,9 +228,11 @@ public class Peluri {
      * @return Pelurin tallennustila
      * @example
      * <pre name="test">
-     *  Peluri ben1 = new Peluri();
-     *  ben1.taytaTestiTiedoilla();
+     *  Peluri ben1 = new Peluri("1|Ben Peluri|Ben_P|1000|0501231234");
      *  ben1.getTTila() === 1000;
+     *  
+     *  Peluri ben2 = new Peluri("1|Ben Peluri|Ben_P||0501231234");
+     *  ben2.getTTila() === 0;
      * </pre>
      */
     public int getTTila() {
@@ -207,7 +243,14 @@ public class Peluri {
     /**
      * Palauttaa pelurin puhelinnumeron
      * @return puhelinnumero
-     * TODO: Testit: Peluri.getPuh()
+     * @example
+     * <pre name="test">
+     *  Peluri ben1 = new Peluri("1|Ben Peluri|Ben_P|1000|0501231234");
+     *  ben1.getPuh() === "0501231234";
+     *  
+     *  Peluri ben2 = new Peluri("1|Ben Peluri|Ben_P||");
+     *  ben2.getPuh() === "";
+     * </pre>
      */
     public String getPuh() {
         return this.puhelin;
@@ -216,8 +259,8 @@ public class Peluri {
     
     /**
      * Asettaa tallennustilan stringistä
+     * Testattu Peluri(String s) konstruktorissa
      * @param s tallennustila stringinä
-     * TODO: Testit: Peluri.setTallennusTila()
      */
     private void setTallennusTila(String s) {
         if(s.equals("")) {
@@ -228,21 +271,6 @@ public class Peluri {
     }
     
     
-    /**
-     * Täyttää pelurin tiedot testitiedoilla
-     */
-    public void taytaTestiTiedoilla() {
-        this.nimi = "Ben Peluri" + rand(1000, 9999);
-        this.pelaajaNimi = "Ben_P";
-        this.tallennusTila = 1000;
-        this.puhelin = arvoPuhelin();
-        //this.puhelin = "050 732 8211";
-    }
-    
-    
-    /**
-     * TODO: Testit: Peluri.toString()
-     */
     @Override
     public String toString() {
         return peluriId+"|"+nimi+"|"+pelaajaNimi+"|"+tallennusTila+"|"+puhelin;
@@ -255,18 +283,16 @@ public class Peluri {
      */
     public static void main(String[] args) {
         
-        Peluri ben1 = new Peluri();
-        Peluri ben2 = new Peluri();
+        Peluri ben1 = new Peluri("1|Ben Peluri|Ben_P||0501231234");
+        Peluri ben2 = new Peluri("2|Ben Peluri|Ben_P||0501231234");
         
         ben1.rekisteroi();
         ben2.rekisteroi();
         
-        ben1.tulosta(System.out);
-        ben1.taytaTestiTiedoilla();
+
         ben1.tulosta(System.out);
         
-        ben2.tulosta(System.out);
-        ben2.taytaTestiTiedoilla();
+
         ben2.tulosta(System.out);
     }
 }

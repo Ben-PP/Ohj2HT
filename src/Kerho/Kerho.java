@@ -164,14 +164,8 @@ public class Kerho {
         
         Kerho kerho = new Kerho();
         
-        Peluri ben1 = new Peluri();
-        Peluri ben2 = new Peluri();
-        
-        ben1.rekisteroi();
-        ben1.taytaTestiTiedoilla();
-        
-        ben2.rekisteroi();
-        ben2.taytaTestiTiedoilla();
+        Peluri ben1 = new Peluri("1|Ben Peluri|Ben_P||0501231234");
+        Peluri ben2 = new Peluri("2|Ben Peluri|Ben_P||0501231234");
         
         kerho.lisaa(ben1);
         kerho.lisaa(ben2);

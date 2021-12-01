@@ -219,31 +219,13 @@ public class Pelurit implements Iterable<Peluri> {
      * @param args ei käytössä
      */
     public static void main(String[] args) {
-        /*Pelurit pelurit = new Pelurit();
-        Peluri ben1 = new Peluri();
-        Peluri ben2 = new Peluri();
-        Peluri ben3 = new Peluri();
-        Peluri ben4 = new Peluri();
-        Peluri ben5 = new Peluri();
-        Peluri ben6 = new Peluri();
-        
-        ben1.rekisteroi();
-        ben1.taytaTestiTiedoilla();
-        
-        ben2.rekisteroi();
-        ben2.taytaTestiTiedoilla();
-        
-        ben3.rekisteroi();
-        ben3.taytaTestiTiedoilla();
-        
-        ben4.rekisteroi();
-        ben4.taytaTestiTiedoilla();
-        
-        ben5.rekisteroi();
-        ben5.taytaTestiTiedoilla();
-        
-        ben6.rekisteroi();
-        ben6.taytaTestiTiedoilla();
+        Pelurit pelurit = new Pelurit();
+        Peluri ben1 = new Peluri("1|Ben Peluri|Ben_P||0501231234");
+        Peluri ben2 = new Peluri("2|Ben Peluri|Ben_P||0501231234");
+        Peluri ben3 = new Peluri("3|Ben Peluri|Ben_P||0501231234");
+        Peluri ben4 = new Peluri("4|Ben Peluri|Ben_P||0501231234");
+        Peluri ben5 = new Peluri("5|Ben Peluri|Ben_P||0501231234");
+        Peluri ben6 = new Peluri("6|Ben Peluri|Ben_P||0501231234");
         
         pelurit.lisaa(ben1);
         pelurit.lisaa(ben2);
@@ -259,23 +241,5 @@ public class Pelurit implements Iterable<Peluri> {
             System.out.println("Peluri indeksi: " + i);
             peluri.tulosta(System.out);
         }
-        
-        pelurit.tallenna("kelmit");*/
-        
-        System.out.println("========================Tiedosto testit=================");
-        
-        Pelurit pelurit = new Pelurit();
-        pelurit.lueTiedostosta("peluritest.txt");
-        Peluri ben7 = new Peluri();
-        ben7.rekisteroi();
-        ben7.taytaTestiTiedoilla();
-        pelurit.lisaa(ben7);
-        for (int i = 0; i < pelurit.getLkm(); i++) {
-            Peluri peluri = pelurit.anna(i);
-            System.out.println("Peluri indeksi: " + i);
-            peluri.tulosta(System.out);
-        }
-
-        System.out.println(Integer.toString(Peluri.getSeuraavaId()));
     }
 }
