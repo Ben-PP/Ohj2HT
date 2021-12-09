@@ -63,7 +63,7 @@ public class Paivat {
      */
     public void lueTiedostosta(String tiedNimi) {
 
-        try (Scanner fi = new Scanner(new FileInputStream(new File(tiedNimi)))){
+        try (Scanner fi = new Scanner(new FileInputStream(new File(tiedNimi)), "UTF-8")){
             while (fi.hasNextLine()) {
                 lisaa(new Paiva(fi.nextLine()));
             }

@@ -173,7 +173,7 @@ public class Pelurit implements Iterable<Peluri> {
      */
     public void lueTiedostosta(String tiedNimi) {
         
-        try (Scanner fi = new Scanner(new FileInputStream(new File(tiedNimi)))){
+        try (Scanner fi = new Scanner(new FileInputStream(new File(tiedNimi)), "UTF-8")){
             while (fi.hasNextLine()) {
                 lisaa(new Peluri(fi.nextLine()));
             }
