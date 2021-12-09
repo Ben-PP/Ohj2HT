@@ -30,8 +30,8 @@
                               <Font name="System Bold" size="23.0" />
                            </font>
                         </Label>
-                        <ComboBoxChooser fx:id="hakuEhto" prefHeight="25.0" prefWidth="176.0" rivit="Nimi&#10;P-Nimi" />
-                        <TextField fx:id="hakuSana" promptText="Hae" />
+                        <ComboBoxChooser fx:id="hakuEhto" onAction="#handleMuutaHakuEhto" prefHeight="25.0" prefWidth="176.0" rivit="Nimi&#10;P-Nimi" />
+                        <TextField fx:id="hakuSana" onKeyTyped="#handleHae" promptText="Hae" />
                         <Label text="Pelurit">
                            <font>
                               <Font name="System Bold Italic" size="16.0" />
@@ -215,19 +215,6 @@
                <HBox.margin>
                   <Insets right="220.0" />
                </HBox.margin></Button>
-            <Label text="ModPack koko(GB):">
-               <font>
-                  <Font name="System Italic" size="16.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="5.0" />
-               </HBox.margin>
-            </Label>
-            <TextField maxWidth="70.0" text="65">
-               <HBox.margin>
-                  <Insets right="5.0" />
-               </HBox.margin>
-            </TextField>
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" top="5.0" />

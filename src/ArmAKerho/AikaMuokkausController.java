@@ -23,6 +23,7 @@ import fi.jyu.mit.fxgui.ModalControllerInterface;
  * @version 15.11.2021
  * @version 28.11.2021
  * @version 29.11.2021
+ * @version 9.12.2021
  */
 public class AikaMuokkausController implements ModalControllerInterface<String[][]> {
     
@@ -74,9 +75,6 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
     }
     
     
-    /**
-     * TODO: Testit: Aikamuokkaus ikkunan alustukseen
-     */
     @Override
     public void handleShown() {
         //tehdään 2 ulotteinen lista textfieldeistä helpottamaan käsittelyä
@@ -194,7 +192,6 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
     
     /**
      * Lisää ajat ajatPalautus taulukkoon textfieldeistä
-     * TODO: Testit: Aikojen lisäys
      */
     private void lisaaAjat() {
         for (int i = 0; i < ajatPalautus.length; i++) {
@@ -209,7 +206,6 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
     /**
      * Asettaa pelurinAjat taulukkoon ajat joilla ikkuna alustetaan
      * @param paivat Lista pelurin päivistä
-     * TODO: Testit: Aikojen alustus
      */
     public void setAjat(List<Paiva> paivat) {
         for (int i = 0; i < paivat.size(); i++) {
@@ -224,8 +220,6 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
     /**
      * Tarkistaa ovatko kaikki aikakentät oikeassa muodossa
      * @return true jos kaikki kentät ovat oikein, muuten false
-     * TODO: Testit: AikaMuokkausController.tarkasta()
-     * TODO: Päivitä: Loppuaika ennen alkuaikaa virhe jos syöttää alkuajaksi yli 2 numeroa
      */
     private boolean tarkasta() {
         String p;
@@ -244,6 +238,8 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
             
             int i = 1;
             for (TextField txtField : lista) {
+                
+                if(txtField.getText().equals("")) txtField.setText("00");
                 String txt = txtField.getText();
                 
                 //Selvittää onko kyseessä tunti vai minuutti
@@ -299,7 +295,6 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
      * @param lH loppu tunti
      * @param lM loppu minuutti
      * @return -1 jos alkuaika on ennen loppuaikaa, 0 jos ovat samat ja 1 jos alkuaika on loppuajan jälkeen
-     * TODO: Testit: tarkastaAika()
      */
     private int tarkastaAika(int aH, int aM, int lH, int lM) {
         if (aH == lH && aM == lM) return 0;

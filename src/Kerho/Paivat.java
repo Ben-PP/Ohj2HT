@@ -15,12 +15,14 @@ import java.util.Collection;
  * Paivat luokka
  * - Pitää yllä varsinaista päivärekisteriä eli osaa lisätä sekä muokata päivää
  * - Lukee ja kirjoittaa paivat tiedostoon
- * - osaa etsiä ja lajitella. TODO: Tarvitaanko? Onko paivat-luokan lajittelu tarpeen?
+ * - osaa etsiä
  * 
  * @author Karel
  * @version 5.11.2021
  * @version 15.11.2021
  * @version 28.11.2021
+ * @version 1.12.2021
+ * @version 9.12.2021
  */
 public class Paivat {
     
@@ -28,17 +30,15 @@ public class Paivat {
      * Lista päivistä jota luokka ylläpitää
      */
     private Collection<Paiva> alkiot = new ArrayList<Paiva>();
-    private boolean muutettu = false;
     
     
     /**
      * Tallentaa päivät
+     * -Testattu Kerho-luokassa
      * @param tiedNimi Tiedoston nimi johon tallennetaan
      * @throws IOException jos tiedostoa ei voitu tallentaa
-     * TODO: Testit: Paivat.tallenna()
      */
     public void tallenna(String tiedNimi) throws IOException {
-        if (!muutettu) return;
         //Varmuuskopioi vanhan tiedoston ennen uuden tallentamista
         File tiedBak = new File(tiedNimi+".bak");
         File tied = new File(tiedNimi+".dat");
@@ -58,6 +58,7 @@ public class Paivat {
     
     /**
      * Lukee paivat tiedostosta
+     * -Testattu Kerho-luokassa
      * @param tiedNimi tiedostopolku josta luetaan
      */
     public void lueTiedostosta(String tiedNimi) {
@@ -77,11 +78,11 @@ public class Paivat {
     
     /**
      * Lisää päivän
+     * -Testattu Kerho-luokassa
      * @param paiv päivä joka lisätään
      */
     public void lisaa(Paiva paiv) {
         alkiot.add(paiv);
-        muutettu = true;
     }
     
     
@@ -94,12 +95,12 @@ public class Paivat {
      *  #import java.util.*;
      *  
      *  Paivat paivat = new Paivat();
-     *  Paiva maanantai2 = new Paiva(2); paivat.lisaa(maanantai2);
-     *  Paiva maanantai1 = new Paiva(1); paivat.lisaa(maanantai1);
-     *  Paiva tiistai2 = new Paiva(2); paivat.lisaa(tiistai2);
-     *  Paiva keskiviikko1 = new Paiva(1); paivat.lisaa(keskiviikko1);
-     *  Paiva perjantai2 = new Paiva(2); paivat.lisaa(perjantai2);
-     *  Paiva maanantai5 = new Paiva(5); paivat.lisaa(maanantai5);
+     *  Paiva maanantai2 = new Paiva("2|00|00|00|00|0"); paivat.lisaa(maanantai2);
+     *  Paiva maanantai1 = new Paiva("1|00|00|00|00|0"); paivat.lisaa(maanantai1);
+     *  Paiva tiistai2 = new Paiva("2|00|00|00|00|1"); paivat.lisaa(tiistai2);
+     *  Paiva keskiviikko1 = new Paiva("1|00|00|00|00|2"); paivat.lisaa(keskiviikko1);
+     *  Paiva perjantai2 = new Paiva("2|00|00|00|00|4"); paivat.lisaa(perjantai2);
+     *  Paiva maanantai5 = new Paiva("5|00|00|00|00|0"); paivat.lisaa(maanantai5);
      *  
      *  List<Paiva> loytyneet;
      *  loytyneet = paivat.annaPaivat(3);
@@ -126,8 +127,8 @@ public class Paivat {
     
     /**
      * Poistaa kaikki tietyn pelurin päivät listasta
+     * -Testattu Kerho-luokassa
      * @param peluriId Pelurin id jonka päivät poistetaan
-     * TODO: Testit: Päivien poistaminen
      */
     public void poistaPelurinPaivat(int peluriId) {
         //Väliaikainen lista johon kerätään poistettavat päivät

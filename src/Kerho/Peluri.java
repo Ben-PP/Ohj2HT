@@ -5,8 +5,6 @@ import java.io.PrintStream;
 
 import fi.jyu.mit.ohj2.Mjonot;
 
-import static Kanta.PuhelinTarkistus.*;
-
 /**
  * Peluri luokka
  * 
@@ -22,6 +20,9 @@ import static Kanta.PuhelinTarkistus.*;
  * @version 28.11.2021
  * @version 29.11.2021
  * @version 30.11.2021
+ * @version 7.12.2021
+ * @version 8.12.2021
+ * @version 9.12.2021
  */
 public class Peluri {
     
@@ -75,13 +76,22 @@ public class Peluri {
      * @example
      * <pre name="test">
      *  Peluri ben1 = new Peluri("1|Ben Peluri|Ben_P|1000|0501231234");
-     *  ben1.toString() === "1|Ben Peluri|Ben_P|1000|0501231234";
+     *  String s1 = ben1.toString();
+     *  s1.equals("1|Ben Peluri|Ben_P|1000|0501231234") === true;
+     *  ben1 = new Peluri(s1);
+     *  ben1.toString().equals(s1) === true;
      *  
      *  Peluri ben2 = new Peluri("5|Ben Pelaaja|Ben!P2|0|");
-     *  ben2.toString() === "5|Ben Pelaaja|Ben!P2|0|";
+     *  String s2 = ben2.toString();
+     *  s2.equals("5|Ben Pelaaja|Ben!P2|0|") === true;
+     *  ben2 = new Peluri(s2);
+     *  ben2.toString().equals(s2) === true;
      *  
      *  Peluri ben3 = new Peluri("3|Ben Pelaaja|Ben!P2|0|");
-     *  ben3.toString() === "3|Ben Pelaaja|Ben!P2|0|";
+     *  String s3 = ben3.toString();
+     *  s3.equals("3|Ben Pelaaja|Ben!P2|0|") === true;
+     *  ben3 = new Peluri(s1);
+     *  ben3.toString().equals(s1) === true;
      *  
      *  Peluri ben4 = new Peluri();
      *  ben4.rekisteroi();
@@ -98,7 +108,7 @@ public class Peluri {
     
     /**
      * Parsii pelurin tiedot stringistä id|Nimi|P-nimi|T-tila|Puh
-     * Testattu Peluri(String s) konstruktorissa
+     * -Testattu Peluri(String s) konstruktorissa
      * @param s id|Nimi|P-nimi|T-tila|Puh
      */
     private void parse(String s) {
@@ -116,7 +126,6 @@ public class Peluri {
     /**
      * Tulostaa jäsenen tiedot
      * @param out Tietovirta johon tiedot tulostetaan
-     * TODO: Toimivaksi: Peluri.tulosta()
      */
     public void tulosta(PrintStream out) {
         out.println(String.format("%03d", peluriId) + " " + nimi + " " + "\""+ pelaajaNimi +"\"");
@@ -201,8 +210,11 @@ public class Peluri {
     /**
      * Palauttaa pelurin nimen
      * @return pelurin nimi
-     * Peluri ben1 = new Peluri("1|Ben Peluri|Ben_P|1000|0501231234");
-     * ben1.getNimi() === "Ben Peluri";
+     * @example
+     * <pre name="test">
+     *  Peluri ben1 = new Peluri("1|Ben Peluri|Ben_P|1000|0501231234");
+     *  ben1.getNimi().equals("Ben Peluri") === true;
+     * </pre>
      */
     public String getNimi() {
         return this.nimi;
@@ -215,7 +227,7 @@ public class Peluri {
      * @example
      * <pre name="test">
      *  Peluri ben1 = new Peluri("1|Ben Peluri|Ben_P|1000|0501231234");
-     *  ben1.getPNimi() === "Ben_P"
+     *  ben1.getPNimi().equals("Ben_P") === true;
      * </pre>
      */
     public String getPNimi() {
@@ -246,10 +258,10 @@ public class Peluri {
      * @example
      * <pre name="test">
      *  Peluri ben1 = new Peluri("1|Ben Peluri|Ben_P|1000|0501231234");
-     *  ben1.getPuh() === "0501231234";
+     *  ben1.getPuh().equals("0501231234") === true;
      *  
      *  Peluri ben2 = new Peluri("1|Ben Peluri|Ben_P||");
-     *  ben2.getPuh() === "";
+     *  ben2.getPuh().equals("") === true;
      * </pre>
      */
     public String getPuh() {
@@ -259,7 +271,7 @@ public class Peluri {
     
     /**
      * Asettaa tallennustilan stringistä
-     * Testattu Peluri(String s) konstruktorissa
+     * -Testattu Peluri(String s) konstruktorissa
      * @param s tallennustila stringinä
      */
     private void setTallennusTila(String s) {
@@ -274,6 +286,19 @@ public class Peluri {
     @Override
     public String toString() {
         return peluriId+"|"+nimi+"|"+pelaajaNimi+"|"+tallennusTila+"|"+puhelin;
+    }
+    
+    
+    /**
+     * Palauttaa pelaajan tulostettavassa muodossa
+     * @return Peluri tulostettavassa muodossa
+     * TODO: Testit: Peluri.toPrintable()
+     */
+    public String toPrintable() {
+        String s = "Id: "+peluriId+"\nNimi: "+nimi+"\n"+
+                "Pelinimi: "+pelaajaNimi+"\n"+
+                "Puh: "+puhelin+"\n";
+        return s;
     }
     
     

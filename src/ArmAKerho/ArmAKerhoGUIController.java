@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+
 import java.awt.Desktop;
 import java.io.File;
 
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import Kanta.RegularExpression;
+import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
@@ -33,11 +36,14 @@ import Kerho.Peluri;
  * @version 15.11.2021
  * @version 28.11.2021
  * @version 29.11.2021
+ * @version 1.12.2021
+ * @version 9.12.2021
  */
 public class ArmAKerhoGUIController implements Initializable {
     
     //Hakukenttä johon voidaan kirjoittaa
     @FXML private TextField hakuSana;
+    @FXML private ComboBoxChooser<String> hakuEhto;
     
     //Lista luoduista pelureista vasemmassa laidassa
     @FXML private ListChooser<Peluri> chooserPelurit;
@@ -70,7 +76,29 @@ public class ArmAKerhoGUIController implements Initializable {
      */
     @FXML
     private void handleAvaa() {
-        avaa();
+        if(kerho.onkoMuutettu()) {
+            if(Dialogs.showQuestionDialog("Poistutaanko?", "Kerhossa on tallentamattomia muutoksia!\nHaluatko varmasti poistua?", "Kyllä", "Ei")) {
+                alusta();
+                avaa();
+            }
+        } else {
+            alusta();
+            avaa();
+        }
+    }
+    
+    
+    
+    @FXML
+    private void handleHae() {
+        etsi();
+    }
+    
+    
+    
+    @FXML
+    private void handleMuutaHakuEhto() {
+        hae(ensimmainenPeluri(), muutaHakuEhto());
     }
     
     
@@ -79,8 +107,8 @@ public class ArmAKerhoGUIController implements Initializable {
      */
     @FXML
     private void handleTulosta() {
-        //FIXME: Tulostaminen
-        TulostusController.tulosta(null);
+        String tulostus = tulostettavaksi();
+        TulostusController.tulosta(tulostus);
     } 
 
     
@@ -92,14 +120,13 @@ public class ArmAKerhoGUIController implements Initializable {
     private void handleUusiPeluri() {
         //avaa pelurin luonti-ikkunan
         Peluri peluri = ModalController.showModal(ArmAKerhoGUIController.class.getResource("PeluriLuontiGUIView.fxml"), "Peluri", null, null);
-        
+        if (peluri == null) return;
         lisaaPeluri(peluri);
     }
     
     
     /**
      * Muokkaa vanhan jäsenen tietoja
-     * TODO: Testit: Pelurin muokkaus FXML
      */
     @FXML
     private void handleMuokkaaPeluria() {
@@ -113,12 +140,12 @@ public class ArmAKerhoGUIController implements Initializable {
     
     /**
      * Poistaa jäsenen
-     * TODO: Testit: Pelurin poisto
      */
     @FXML
     private void handlePoistaPeluri() {
-        // TODO: Toimivaksi: Pelurin poisto FXML
-        Dialogs.showMessageDialog("Vielä ei osata poistaa jäsentä");
+        if(Dialogs.showQuestionDialog("Poistetaanko?", "Haluatko varmasti poistaa pelurin?", "Kyllä", "Ei")) {
+            poistaPeluri();
+        }
     }
 
     
@@ -127,7 +154,6 @@ public class ArmAKerhoGUIController implements Initializable {
     /**
      * Avaa ikkunan jossa voidaan muokata pelaajan peliaikoja
      * @param event ei käytössä
-     * TODO: Testit: Aikojen muokkaus FXML
      */
     @FXML
     private void handleAikaMuokkaus() {
@@ -135,16 +161,7 @@ public class ArmAKerhoGUIController implements Initializable {
         
         //Avaa aikamuokkausikkunan
         ajat = ModalController.<String[][],AikaMuokkausController>showModal(AikaMuokkausController.class.getResource("aikaMuokkausGUIView.fxml"), "Tiedot", null, ajat,ctrl->ctrl.setAjat(kerho.getPaivat(peluriKohdalla)));
-        
-        //TODO: Poista: Sys.out.println debuggausta varten FXML
-        //tulostus debuggausta varten=========================
-        for (int i = 0; i < ajat.length; i++) {
-            for(int a = 0; a < ajat[i].length; a++) {
-                System.out.print(ajat[i][a]+",");
-            }
-            System.out.println();
-        }
-        //taas toiminnallista================================
+
         if (ajat[0][0] == null) return;
         muokkaaAikoja(ajat);
     }
@@ -155,7 +172,6 @@ public class ArmAKerhoGUIController implements Initializable {
      */
     @FXML
     private void handleLopeta() {
-        //TODO: Lopuksi: Muokkaa tarvittaessa lopetus FXML
         tallenna();
         Platform.exit();
     }
@@ -163,11 +179,9 @@ public class ArmAKerhoGUIController implements Initializable {
     
     /**
      * Tallentaa kaikki tiedot
-     * TODO: Testit: Tallentaminen FXML
      */
     @FXML
     private void handleTallenna() {
-        //TODO: Toimivaksi: Tallentaminen FXML
         tallenna();
     }
     
@@ -186,7 +200,6 @@ public class ArmAKerhoGUIController implements Initializable {
      */
     @FXML
     private void handleTietoja() {
-        // TODO: Päivitä: Tietoja-ikkuna FXML
         ModalController.showModal(ArmAKerhoGUIController.class.getResource("AboutView.fxml"), "Kerho", null, "");
     }
     
@@ -197,6 +210,7 @@ public class ArmAKerhoGUIController implements Initializable {
     
     //Kerho jota käsitellään
     private Kerho kerho;
+    
     /**
      * Peluri joka on valittu chooserboxissa
      */
@@ -210,10 +224,11 @@ public class ArmAKerhoGUIController implements Initializable {
      */
     private String[][] ajat;
     
+    private String hakuTapa = "nimi";
+    
     
     /**
      * Alustaa pääikkunan
-     * TODO: Testit: Pääikkunan alustus
      */
     private void alusta() {
         paivatLabels = new ArrayList<Label>(List.of(
@@ -228,24 +243,35 @@ public class ArmAKerhoGUIController implements Initializable {
         
         chooserPelurit.clear();
         chooserPelurit.addSelectionListener(e -> naytaPeluri());
+        
         File kerhot = new File("kerhot");
         if(!kerhot.exists()) kerhot.mkdir();
+        
+        kerho = new Kerho();
     }
     
     /**
      * Lisää pelurin kerhoon
      * @param peluri Peluri joka lisätään
-     * TODO: Testit: Pelurin lisääminen kerhoon
      */
     private void lisaaPeluri(Peluri peluri) {
             kerho.lisaa(peluri);
-            hae(peluri.getPeluriId());
+            hae(peluri.getPeluriId(), true);
+    }
+    
+    
+    /**
+     * Poistaa valitun pelurin
+     */
+    private void poistaPeluri() {
+        if (peluriKohdalla == null) return;
+        kerho.poistaPeluri(peluriKohdalla.getPeluriId());
+        hae(1, true);
     }
     
     
     /**
      * Näyttää listalta valitun pelurin tiedot
-     * TODO: Testit: Pelurin tietojen näyttäminen
      */
     private void naytaPeluri() {
         peluriKohdalla = chooserPelurit.getSelectedObject();
@@ -294,12 +320,11 @@ public class ArmAKerhoGUIController implements Initializable {
     /**
      * Lukee kerhon tiedot tiedostosta
      * @param nimi Kerhon nimi
-     * TODO: Testit: Tiedostosta lukeminen
      */
     protected void lueTiedosto(String nimi) {
         
         kerho.lueTiedostosta("kerhot/"+nimi+"/nimet.dat", "kerhot/"+nimi+"/pelipaivat.dat");
-        hae(1);
+        hae(1, true);
         kerhonnimi = nimi;
         setTitle("Kerho - " + kerhonnimi);
     }
@@ -308,7 +333,31 @@ public class ArmAKerhoGUIController implements Initializable {
     /**
      * Luo uuden kerhon kansiorakenteen
      * @param nimi kerhon nimi
-     * TODO: Testit: Kansiorakenteen luominen
+     * @example
+     * <pre name="test">
+     *  #import java.io.File;
+     *  #import ArmAKerho.ArmAKerhoGUIController;
+     *  
+     *  ArmAKerhoGUIController ctrl = new ArmAKerhoGUIController();
+     *  ctrl.luoTiedostotTest("testi");
+     *  
+     *  File nimet = new File("kerhot/testi/nimet.dat");
+     *  File nimetBak = new File("kerhot/testi/nimet.bak");
+     *  File pelipaivat = new File("kerhot/testi/pelipaivat.dat");
+     *  File pelipaivatBak = new File("kerhot/testi/pelipaivat.bak");
+     *  
+     *  nimet.exists() === true;
+     *  nimetBak.exists() === true;
+     *  pelipaivat.exists() === true;
+     *  pelipaivatBak.exists() === true;
+     *  
+     *  nimet.delete();
+     *  nimetBak.delete();
+     *  pelipaivat.delete();
+     *  pelipaivatBak.delete();
+     *  File testi = new File("kerhot/testi");
+     *  testi.delete();
+     * </pre>
      */
     private void luoTiedostot(String nimi) {
         File paa = new File("kerhot/"+nimi);
@@ -330,11 +379,18 @@ public class ArmAKerhoGUIController implements Initializable {
     
     
     /**
+     * Metodi tiedostonluonnin testaamista varten
+     * @param nimi kerhon nimi
+     */
+    public void luoTiedostotTest(String nimi) {
+        luoTiedostot(nimi);
+    }
+    
+    
+    /**
      * Tallentaa kaikki tiedot
-     * TODO: Testit: Tallentaminen
      */
     private void tallenna() {
-     // TODO: Toimivaksi: Tiedostoon tallentaminen
         kerho.tallenna("kerhot/"+kerhonnimi+"/nimet", "kerhot/"+kerhonnimi+"/pelipaivat");
     }
 
@@ -342,10 +398,8 @@ public class ArmAKerhoGUIController implements Initializable {
     /**
      * Kysytään tiedoston nimi ja luetaan kyseinen tiedosto
      * @return true jos onnistui, false jos epäonnistui
-     * TODO: Testit: Alkuikkunan avaus
      */
     public boolean avaa() {
-        // TODO: Toimivaksi: Kerhon valitseminen nimen pohjalta ensimmäiseksi
         boolean valmis = false;
         String uusinimi = "";
         do {
@@ -376,7 +430,6 @@ public class ArmAKerhoGUIController implements Initializable {
      * Näytetään ohjelman suunnitelma TIM:issä erillisessä selaimessa.
      */
     private void avustus() {
-        // TODO: Päivitä: TIM Suunnitelma
         Desktop desktop = Desktop.getDesktop();
         try {
             URI uri = new URI("https://tim.jyu.fi/view/kurssit/tie/ohj2/2021s/ht/kabepark");
@@ -390,6 +443,15 @@ public class ArmAKerhoGUIController implements Initializable {
     
     
     /**
+     * Palauttaa kerhon pelurit tulostettavassa muodossa
+     * @return Kerhon pelurit tulostettavassa muodossa
+     */
+    private String tulostettavaksi() {
+        return kerho.tulosta();
+    }
+    
+    
+    /**
      * Asetetaan käytettävä kerho
      * @param kerho jota käytetään
      */
@@ -399,45 +461,126 @@ public class ArmAKerhoGUIController implements Initializable {
     
     
     /**
+     * Palauttaa tiedon onko tietoja muutettu tallentamisen jälkeen
+     * @return true jos on tallentamattomia tietoja, muuten false
+     */
+    public boolean onkoMuutettu() {
+        return kerho.onkoMuutettu();
+    }
+    
+    
+    /**
      * Päivittää peluri listan
      * @param jnro jäsennumero
+     * @param nimella true jos halutaan näyttää Pelureiden nimet ja false jos pelaajanimet
      */
-    private void hae(int jnro) {
+    private void hae(int jnro, Boolean nimella) {
         chooserPelurit.clear();
         int index = 0;
         for (int i = 0; i < kerho.getPelureita(); i++) {
             Peluri peluri = kerho.getPeluri(i);
             if (peluri.getPeluriId() == jnro) index = i;
-            chooserPelurit.add(peluri.getNimi(), peluri);
+            if (nimella) {
+                chooserPelurit.add(peluri.getNimi(), peluri);
+            } else {
+                chooserPelurit.add("_"+peluri.getPNimi(), peluri);
+            }
         }
         chooserPelurit.setSelectedIndex(index);
     }
     
     
     /**
+     * Päivittää peluri listan
+     * @param jnro jäsennumero
+     * @param nimella true jos halutaan näyttää Pelureiden nimet ja false jos pelaajanimet
+     */
+    private void hae(ArrayList<Peluri> lista, int jnro, Boolean nimella) {
+        chooserPelurit.clear();
+        int index = 0;
+        for (int i = 0; i < lista.size(); i++) {
+            Peluri peluri = lista.get(i);
+            if (peluri.getPeluriId() == jnro) index = i;
+            if (nimella) {
+                chooserPelurit.add(peluri.getNimi(), peluri);
+            } else {
+                chooserPelurit.add("_"+peluri.getPNimi(), peluri);
+            }
+        }
+        chooserPelurit.setSelectedIndex(index);
+    }
+    
+    
+    /**
+     * Etsii hakusanaa vastaavat pelurit ja näyttää heidät
+     */
+    private void etsi() {
+        
+        ArrayList<Peluri> lista = new ArrayList<Peluri>();
+        switch (hakuTapa) {
+        case "P-Nimi":
+            for (int i = 0; i < kerho.getPelureita(); i++) {
+                Peluri peluri = kerho.getPeluri(i);
+                if (RegularExpression.regulaariExp(hakuSana.getText(), peluri.getPNimi(), true)) {
+                    lista.add(peluri);
+                }
+            }
+            hae(lista, ensimmainenPeluri(), false);
+            break;
+
+        default:
+            for (int i = 0; i < kerho.getPelureita(); i++) {
+                Peluri peluri = kerho.getPeluri(i);
+                if (RegularExpression.regulaariExp(hakuSana.getText(), peluri.getNimi(), true)) {
+                    lista.add(peluri);
+                }
+            }
+            hae(lista, ensimmainenPeluri(), true);
+            break;
+        }
+    }
+    
+    
+    /**
+     * Muuttaa haetaanko pelureita nimen vai pelaajanimen mukaan
+     * @return true jos nimen mukaan ja false jos pelaajanimen mukaan
+     */
+    private boolean muutaHakuEhto() {
+        hakuTapa = hakuEhto.getSelectedText();
+        if(hakuTapa.equals("Nimi")) return true;
+        return false;
+    }
+    
+    
+    /**
+     * Selvittää ja palauttaa pelurin jolla on kerhon pienin jäsennumero
+     * @return Kerhon pienin jäsennumero
+     */
+    private int ensimmainenPeluri() {
+        int id = kerho.getPeluri(kerho.getPelureita()-1).getPeluriId();
+        for (int i = kerho.getPelureita()-1; i >= 0; i--) {
+            if (kerho.getPeluri(i).getPeluriId() < id) id = kerho.getPeluri(i).getPeluriId();
+        }
+        return id;
+    }
+    
+    
+    /**
      * Muokkaa pelurin aikoja
      * @param aikaTaulukko Taulukko josta ajat luetaan. String[0=maanantai][0=AlkuTunti]
-     *TODO: Testit: Aikojen muokkaus
      */
     private void muokkaaAikoja(String[][] aikaTaulukko) {
-        //Poistaa kaikki pelurin päivät paivat luokasta
-        kerho.poistaPelurinPaivat(peluriKohdalla.getPeluriId());
-        //Tekee uudet päivät pelurille
-        for (int i = 0; i < aikaTaulukko.length; i++) {
-            Paiva pv = new Paiva(peluriKohdalla.getPeluriId(), aikaTaulukko[i][0], aikaTaulukko[i][1], aikaTaulukko[i][2], aikaTaulukko[i][3], i);
-            kerho.lisaa(pv);
-        }
-        hae(peluriKohdalla.getPeluriId());
+        kerho.muokkaaAikoja(peluriKohdalla.getPeluriId(), aikaTaulukko);
+        hae(peluriKohdalla.getPeluriId(), true);
     }
     
     
     /**
      * Muokkaa pelurin tiedot
      * @param tiedot taulukko tiedoista [nimi, pnimi, ttila, puh]
-     * TODO: Testit: Controller.muokkaaTietoja()
      */
     private void muokkaaTietoja(String[] tiedot) {
         kerho.muokkaaTietoja(peluriKohdalla.getPeluriId(), tiedot);
-        hae(peluriKohdalla.getPeluriId());
+        hae(peluriKohdalla.getPeluriId(), true);
     }
 }

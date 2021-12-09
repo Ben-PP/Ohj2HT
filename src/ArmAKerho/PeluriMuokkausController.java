@@ -12,7 +12,8 @@ import Kerho.Peluri;
  * Käsittelee Pelurin tietojen muokkausikkunan tapahtumat
  * @author Karel
  * @version 29.11.2021
- *
+ * @version 1.12.2021
+ * @version 9.12.2021
  */
 public class PeluriMuokkausController implements ModalControllerInterface<String[]> {
     
@@ -30,8 +31,7 @@ public class PeluriMuokkausController implements ModalControllerInterface<String
 
     @Override
     public void handleShown() {
-        // TODO Auto-generated method stub
-        
+        //
     }
     
 
@@ -70,7 +70,6 @@ public class PeluriMuokkausController implements ModalControllerInterface<String
     
     /**
      * kerää tiedot textFieldeistä taulukkoon
-     * TODO: Testit: MuokkausController.keraaTiedot()
      */
     private void keraaTiedot() {
         muutetut[0] = nimiTextField.getText();
@@ -83,7 +82,6 @@ public class PeluriMuokkausController implements ModalControllerInterface<String
     /**
      * Tarkastaa kenttien oikeellisuuden
      * @return true jos kentät ovat kunnossa, false jos ei
-     * TODO: Testit: MuokkausController.tarkasta()
      */
     private boolean tarkasta() {
         boolean ok = true;
@@ -116,7 +114,7 @@ public class PeluriMuokkausController implements ModalControllerInterface<String
         }
         
         //Tarkastaa puhelin kentän. Saa sisältää numeroita, välilyöntejä ja + merkin.
-        if(RegularExpression.regulaariExp("\s*$", puhNumTextField.getText(), true)) puhNumTextField.setText("");
+        if(RegularExpression.regulaariExp("\s+$", puhNumTextField.getText(), true)) puhNumTextField.setText("");
         if(!RegularExpression.regulaariExp("[^0-9\s\\+]", puhNumTextField.getText(), true)) {
             puhNumTextField.setStyle(null);
         } else {
@@ -131,13 +129,28 @@ public class PeluriMuokkausController implements ModalControllerInterface<String
     /**
      * Alustaa ikkunan
      * @param peluri peluri jolta tiedot otetaan
-     * TODO: Testit: MuokkausController.alusta()
      */
     public void alusta(Peluri peluri) {
-        nimiTextField.setText(peluri.getNimi());
-        pelaajaNimiTextField.setText(peluri.getPNimi());
-        tallennusTilaTextField.setText(Integer.toString(peluri.getTTila()));
-        puhNumTextField.setText(peluri.getPuh());
+        String nimi = peluri.getNimi();
+        nimiTextField.setText(nimi);
+        muutetut[0] = nimi;
+        
+        String pNimi = peluri.getPNimi();
+        pelaajaNimiTextField.setText(pNimi);
+        muutetut[1] = pNimi;
+        
+        String tTila;
+        if(tallennusTilaTextField.getText() != null) {
+            tTila = Integer.toString(peluri.getTTila());
+            tallennusTilaTextField.setText(tTila);
+            muutetut[2] = tTila;
+        } else {
+            tallennusTilaTextField.setText("0");
+            muutetut[2] = "0";
+        }
+        
+        String puh = peluri.getPuh();
+        puhNumTextField.setText(puh);
     }
 
 }

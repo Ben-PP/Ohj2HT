@@ -21,6 +21,8 @@ import java.util.Scanner;
  * @version 28.10.2021
  * @version 15.11.2021
  * @version 28.11.2021
+ * @version 1.12.2021
+ * @version 9.12.2021
  */
 public class Pelurit implements Iterable<Peluri> {
     
@@ -28,7 +30,6 @@ public class Pelurit implements Iterable<Peluri> {
     private static final int MAX_PELUREITA  = 5;
     private int lkm = 0;
     private Peluri[] alkiot;
-    private boolean muutettu = false;
     
     
     /**
@@ -73,21 +74,36 @@ public class Pelurit implements Iterable<Peluri> {
         }
         this.alkiot[this.lkm] = peluri;
         lkm++;
-        muutettu = true;
+    }
+    
+    
+    /**
+     * Poistaa halutun pelurin
+     * @param peluriId Poistettavan pelurin Id
+     */
+    public void poistaPeluri(int peluriId) {
+        int yliKirjoitettava = 0;
+        for (int i = 0; i < lkm; i++) {
+            if (alkiot[i].getPeluriId() == peluriId) {
+                continue;
+            }
+            alkiot[(yliKirjoitettava)] = alkiot[i];
+            yliKirjoitettava++;
+        }
+        lkm -= 1;
     }
     
     
     /**
      * Muokkaa pelurin tiedot
+     * -Testattu Kerho-luokassa
      * @param peluriId peluri jonka tietoja muokataan
      * @param tiedot taulukko tiedoista [nimi,pnimi,ttila,puh]
-     * TODO: Testit: Pelurit.muokkaaTietoja()
      */
     public void muokkaaTietoja(int peluriId, String[] tiedot) {
         for (int i = 0; i < lkm; i++) {
             if(alkiot[i].getPeluriId() == peluriId) {
                 alkiot[i].muokkaaTietoja(tiedot);
-                muutettu = true;
                 return;
             }
         }
@@ -96,10 +112,10 @@ public class Pelurit implements Iterable<Peluri> {
     
     /**
      * Palauttaa pelurin
+     * -Testattu lisaa() metodissa
      * @param i paikka josta peluri palautetaan
      * @return peluri
      * @throws IndexOutOfBoundsException jos i ei ole sallitulla alueella
-     * TODO: Testit: anna() Testit Peluri-luokkaan
      */
     public Peluri anna(int i) throws IndexOutOfBoundsException {
         if (i < 0 || this.lkm <= i)
@@ -130,12 +146,11 @@ public class Pelurit implements Iterable<Peluri> {
     
     /**
      * Tallentaa kerhon pelurit tiedostoon
+     * -Testattu Kerho-luokassa
      * @param tiedNimi tiedoston nimi johon tallennetaan
      * @throws IOException Jos tiedostoa ei voitu tallentaa
-     * TODO: Testit: Pelurit tallenna testit
      */
     public void tallenna(String tiedNimi) throws IOException {
-        if (!muutettu) return;
         File tiedBak = new File(tiedNimi+".bak");
         File tied = new File(tiedNimi+".dat");
         tiedBak.delete();
@@ -153,8 +168,8 @@ public class Pelurit implements Iterable<Peluri> {
     
     /**
      * Lukee kerhon pelurit tiedostosta
+     * -Testattu Kerho-luokassa
      * @param tiedNimi Tiedosto josta luetaan
-     * TODO: Testit: Pelurit.lueTiedostosta()
      */
     public void lueTiedostosta(String tiedNimi) {
         
@@ -172,7 +187,6 @@ public class Pelurit implements Iterable<Peluri> {
      * Iteraattori Pelurit luokalle
      * @author Karel
      * @version 28.11.2021
-     * TODO: Testit: PeluritIterator
      */
     public class PeluritIterator implements Iterator<Peluri>{
 
@@ -207,6 +221,21 @@ public class Pelurit implements Iterable<Peluri> {
     
     /**
      * Palautetaan iteraattori Pelureista
+     * @example
+     * <pre name="test">
+     *  #import java.util.Iterator;
+     *  Pelurit pelurit = new Pelurit();
+     *  pelurit.lisaa(new Peluri("1|Ben One|Ben_O|1000|0509998888"));
+     *  pelurit.lisaa(new Peluri("2|Ben Two|Ben_Tw|1000|0509998888"));
+     *  pelurit.lisaa(new Peluri("3|Ben Three|Ben_Th|1000|0509998888"));
+     *  pelurit.lisaa(new Peluri("4|Ben Four|Ben_F|1000|0509998888"));
+     *  Iterator<Peluri> iter = pelurit.iterator();
+     *  int i = 1;
+     *  for (;iter.hasNext();) {
+     *      iter.next().getPeluriId() === i;
+     *      i++;
+     *  }
+     * </pre>
      */
     @Override
     public Iterator<Peluri> iterator() {

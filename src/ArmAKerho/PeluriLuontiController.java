@@ -15,6 +15,7 @@ import Kerho.Peluri;
  * @version 28.10.2021
  * @version 15.11.2021
  * @version 29.11.2021
+ * @version 9.12.2021
  */
 public class PeluriLuontiController implements ModalControllerInterface<Peluri> {
     
@@ -79,7 +80,6 @@ public class PeluriLuontiController implements ModalControllerInterface<Peluri> 
     /**
      * Tarkastaa kenttien oikeellisuuden
      * @return true jos kentät ovat kunnossa, false jos ei
-     * TODO: Testit: LuontiController.Tarkasta()
      */
     private boolean tarkasta() {
         boolean ok = true;
@@ -112,7 +112,7 @@ public class PeluriLuontiController implements ModalControllerInterface<Peluri> 
         }
         
         //Tarkastaa puhelin kentän. Saa sisältää numeroita, välilyöntejä ja + merkin.
-        if(RegularExpression.regulaariExp("\s*$", puhNumTextField.getText(), true)) puhNumTextField.setText("");
+        if(RegularExpression.regulaariExp("^\s*$", puhNumTextField.getText(), true)) puhNumTextField.setText("");
         if(!RegularExpression.regulaariExp("[^0-9\s\\+]", puhNumTextField.getText(), true)) {
             puhNumTextField.setStyle(null);
         } else {
@@ -126,7 +126,6 @@ public class PeluriLuontiController implements ModalControllerInterface<Peluri> 
     
     /**
      * Tehdään uusi peluri joka voidaan lisätä kerhoon
-     * TODO: Testit: Pelurin luominen
      */
     private void uusiPeluri() {
         peluri = new Peluri(nimiTextField.getText(), pelaajaNimiTextField.getText(), tallennusTilaTextField.getText(), puhNumTextField.getText());
