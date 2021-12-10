@@ -242,6 +242,17 @@ public class AikaMuokkausController implements ModalControllerInterface<String[]
                 if(txtField.getText().equals("")) txtField.setText("00");
                 String txt = txtField.getText();
                 
+                if (RegularExpression.regulaariExp("[^0-9]", txt, true)) {
+                    ok = false;
+                    txtField.setStyle("-fx-background-color: #F55959;");
+                    System.out.println("NoMatch");
+                    virheLabel1.setText("Anna ajat \"HH:MM\"!");
+                    virheLabel1.setStyle("-fx-background-color: #F55959; -fx-font-size: 14; -fx-font-weight: bold");
+                    txtField.setText("00");
+                } else {
+                    txtField.setStyle(null);
+                }
+                
                 //Selvittää onko kyseessä tunti vai minuutti
                 if (RegularExpression.regulaariExp("H", txtField.getId(), true)) {
                     p = "^0[0-9]$|^1[0-9]$|^2[0-4]$";

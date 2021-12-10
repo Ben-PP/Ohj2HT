@@ -95,7 +95,6 @@ public class Peluri {
      *  
      *  Peluri ben4 = new Peluri();
      *  ben4.rekisteroi();
-     *  
      *  int n1 = ben2.getPeluriId();
      *  int n2 = ben4.getPeluriId();
      *  n2 === n1+1;
